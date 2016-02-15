@@ -1,11 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using TinyLog.Mvc;
 
@@ -16,7 +10,7 @@ namespace TinyLog.Formatters
         public ControllerContextFormatter(bool indentText = true)
             : base(typeof(ControllerContext),false)
         {
-
+            
         }
 
         private Formatting indent = Formatting.Indented;
