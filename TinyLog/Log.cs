@@ -266,6 +266,17 @@ namespace TinyLog
             return Task.FromResult<bool>(WriteLogEntry(logEntry,emergencyLogSetting ?? EmergencyLogSetting));
         }
 
+
+        /// <summary>
+        /// Writes a new log entry to the log
+        /// </summary>
+        /// <param name="logEntry">The LogEntry object to write</param>
+        /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
+        public bool WriteLogEntry(LogEntry logEntry)
+        {
+            return WriteLogEntry(logEntry, EmergencyLogSetting);
+        }
+
         /// <summary>
         /// Writes a new log entry to the log
         /// </summary>
