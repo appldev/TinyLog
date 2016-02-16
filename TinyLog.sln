@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyLog.MSMQ", "TinyLog.MSM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyLog.Mvc", "TinyLog.Mvc\TinyLog.Mvc.csproj", "{D1E1717D-D6FC-402F-AF63-7AA16DEF694F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinySql.Sql", "TinySql.Sql\TinySql.Sql.csproj", "{BE0E2983-30B6-4804-8783-C88C1F52A029}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D1E1717D-D6FC-402F-AF63-7AA16DEF694F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1E1717D-D6FC-402F-AF63-7AA16DEF694F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1E1717D-D6FC-402F-AF63-7AA16DEF694F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE0E2983-30B6-4804-8783-C88C1F52A029}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE0E2983-30B6-4804-8783-C88C1F52A029}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE0E2983-30B6-4804-8783-C88C1F52A029}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE0E2983-30B6-4804-8783-C88C1F52A029}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

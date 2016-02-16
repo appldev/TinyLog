@@ -20,10 +20,13 @@ namespace TinyLog.Subscribers
 
         private string _QueueName;
         private MessageQueue _Queue;
-
+        private static object queueLock = new object();
         public override void Receive(LogEntry logEntry, bool Created)
         {
-            Helpers.PostMessage(logEntry, _Queue);
+            lock (queueLock)
+            {
+                Helpers.PostMessage(logEntry, _Queue);
+            }
         }
 
         public override Task ReceiveAsync(LogEntry logEntry, bool Created)

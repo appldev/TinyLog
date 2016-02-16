@@ -4,13 +4,28 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5AC41AB1-48F6-4A19-9205-94ECCB35FEC4}</ProjectGuid>
+    <ProjectGuid>{BE0E2983-30B6-4804-8783-C88C1F52A029}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TinyLog</RootNamespace>
-    <AssemblyName>TinyLog</AssemblyName>
+    <RootNamespace>TinySql</RootNamespace>
+    <AssemblyName>TinySql.Sql</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +47,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,25 +56,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Defaults.cs" />
-    <Compile Include="Formatters\ExceptionFormatter.cs" />
-    <Compile Include="Formatters\XmlSerializationFormatter.cs" />
-    <Compile Include="LogEntry.cs" />
-    <Compile Include="LogEntryFilter.cs" />
-    <Compile Include="LogFormatter.cs" />
-    <Compile Include="Log.cs" />
-    <Compile Include="LogSubscriber.cs" />
-    <Compile Include="LogWriter.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Subscribers\EmailSubscriber.cs" />
-    <Compile Include="Subscribers\XmlFileSubscriber.cs" />
-    <Compile Include="Writers\ConsoleLogWriter.cs" />
-    <Compile Include="Writers\DebuggerLogWriter.cs" />
-    <Compile Include="Writers\EventLogwriter.cs" />
-    <Compile Include="Writers\FileLogWriter.cs" />
-    <Compile Include="Writers\TraceLogWriter.cs" />
+    <Compile Include="Writers\SqlLogWriter.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TinyLog\TinyLog.csproj">
+      <Project>{5ac41ab1-48f6-4a19-9205-94eccb35fec4}</Project>
+      <Name>TinyLog</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Database\TinyLogDb.mdf" />
+    <Content Include="Database\TinyLogDb_log.ldf">
+      <DependentUpon>TinyLogDb.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

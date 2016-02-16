@@ -10,6 +10,37 @@ namespace TinyLog.Writers
     /// </summary>
     public class MessageQueueLogWriter : LogWriter
     {
+        /// <summary>
+        /// Deletes a Message Queue
+        /// </summary>
+        /// <param name="queueName">The path to the queue</param>
+        public static void Delete(string queueName)
+        {
+            MessageQueue.Delete(queueName);
+        }
+        /// <summary>
+        /// Clears a Message Queue
+        /// </summary>
+        /// <param name="queueName">The path to the queue</param>
+        public static void Purge(string queueName)
+        {
+            MessageQueue queue = new MessageQueue(queueName);
+        }
+
+        public static int Count(string queueName)
+        {
+            MessageQueue queue = new MessageQueue(queueName);
+            MessageEnumerator e = queue.GetMessageEnumerator2();
+            int num = 0;
+            while (e.MoveNext())
+            {
+                num++;
+            }
+            return num;
+        }
+
+
+
         public MessageQueueLogWriter(string queueName, LogEntryFilter filter = null)
         {
             if (string.IsNullOrEmpty(queueName))
@@ -25,6 +56,7 @@ namespace TinyLog.Writers
 
         private string _QueueName;
         private MessageQueue _Queue;
+        private static object queueLock = new object();
 
         public override bool TryInitialize(out Exception initializeException)
         {
@@ -51,7 +83,10 @@ namespace TinyLog.Writers
             writeException = null;
             try
             {
-                Helpers.PostMessage(logEntry, _Queue);
+                lock (queueLock)
+                {
+                    Helpers.PostMessage(logEntry, _Queue);
+                }
             }
             catch (Exception ex)
             {

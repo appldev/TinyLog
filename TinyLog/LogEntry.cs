@@ -33,7 +33,7 @@ namespace TinyLog
     /// Defines an entry in the log
     /// </summary>
     [Serializable]
-    public class LogEntry
+    public class LogEntry : ICloneable
     {
         #region ctor
         public LogEntry()
@@ -43,7 +43,47 @@ namespace TinyLog
 
         #endregion
 
-        #region static instantiation methods
+        #region static methods
+
+        /// <summary>
+        /// Makes a copy of a log entry object
+        /// </summary>
+        /// <param name="copyFrom">The LogEntry object to copy</param>
+        /// <returns>The copy</returns>
+        public static LogEntry Copy(LogEntry copyFrom)
+        {
+            return new LogEntry()
+            {
+                Id = copyFrom.Id,
+                CorrelationId = copyFrom.CorrelationId,
+                CreatedOn = copyFrom.CreatedOn,
+                Title = copyFrom.Title,
+                Message = copyFrom.Message,
+                Source = copyFrom.Source,
+                Area = copyFrom.Area,
+                Client = copyFrom.Client,
+                ClientInfo = copyFrom.ClientInfo,
+                Severity = copyFrom.Severity,
+                CustomData = copyFrom.CustomData,
+                CustomDataFormatter = copyFrom.CustomDataFormatter
+            };
+        }
+
+        /// <summary>
+        /// Makes a copy of an excisting log entry and assigns a new unique id and date to it. It is also possible to set the correlation id, if it is not set already
+        /// </summary>
+        /// <param name="copyFrom">The LogEntry object to copy</param>
+        /// <param name="correlationId">The correlation id to assign to the copied log entry</param>
+        /// <returns>The copy</returns>
+        public static LogEntry CopyNew(LogEntry copyFrom, Guid? correlationId = null)
+        {
+            LogEntry log = Copy(copyFrom);
+            log.Id = Guid.NewGuid();
+            log.CreatedOn = DateTimeOffset.Now;
+            log.CorrelationId = correlationId ?? copyFrom.CorrelationId;
+            return log;
+        }
+
 
         public static LogEntry Create(string title, string message, LogEntrySeverity severity = LogEntrySeverity.Information)
         {
@@ -75,8 +115,18 @@ namespace TinyLog
             return new LogEntry() { Title = title, Message = message, Source = source, Area = area, Severity = LogEntrySeverity.Verbose };
         }
 
-        #endregion  
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
 
+        #endregion
+
+
+        /// <summary>
+        /// If specified, identities two or more log entries within a transaction
+        /// </summary>
+        public Guid? CorrelationId { get; set; }
 
         /// <summary>
         /// The unique id of the log

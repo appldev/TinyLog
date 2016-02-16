@@ -101,7 +101,7 @@ namespace TinyLog.Formatters
             }
             else if (ex is System.Net.WebException)
             {
-
+                FormatWebException(sb, (ex as WebException));
             }
             else
             {
@@ -118,8 +118,8 @@ namespace TinyLog.Formatters
             Exception exInner = ex.InnerException;
             while (exInner != null)
             {
-                sb.AppendLine();
-                FormatException(sb, ex);
+                sb.Append("\r\n");
+                FormatException(sb, exInner);
                 exInner = exInner.InnerException;
             }
         }

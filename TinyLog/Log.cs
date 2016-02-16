@@ -6,6 +6,27 @@ using System.Threading.Tasks;
 
 namespace TinyLog
 {
+
+    /// <summary>
+    /// Settings for how TinyLog should handle exceptions thrown in the core functions and libraries
+    /// </summary>
+    public enum EmergencyLogSettings
+    {
+        /// <summary>
+        /// Ignore any exceptions
+        /// </summary>
+        Ignore = 1,
+        /// <summary>
+        /// Add the exceptions to the emergency log, if available. Otherwise throw the exceptions
+        /// </summary>
+        AddToEmergencyLog = 2,
+        /// <summary>
+        /// Throw the exceptions and let the consuming application handle the exceptions
+        /// </summary>
+        ThrowExceptions = 3
+    }
+
+
     /// <summary>
     /// This is the main Log class. All logging is configured and executed from this class.
     /// </summary>
@@ -29,7 +50,89 @@ namespace TinyLog
 
         #endregion
 
+        #region static Emergency log
+
+        private static Log _EmergencyLog;
+        /// <summary>
+        /// Contains the global Emergency log setting that all logs will use. This setting can be overridden in each WriteLog() call
+        /// </summary>
+        public static EmergencyLogSettings EmergencyLogSetting { get; set; } = EmergencyLogSettings.ThrowExceptions;
+
+        /// <summary>
+        /// Setup the emergency log with a FileLogWriter in the default temp folder and with a random file name. It also adds the default Exception formatter
+        /// </summary>
+        public static void SetupEmergencyLog()
+        {
+            SetupEmergencyLog(System.IO.Path.GetTempPath(), "TinyLog_" + System.IO.Path.GetRandomFileName() + ".log");
+        }
+
+        /// <summary>
+        /// Setup the emergency log with a FileLogWriter in the path specified and an Exception formatter
+        /// </summary>
+        /// <param name="logPath">The location of the log</param>
+        /// <param name="logFileName">The name of the log</param>
+        public static void SetupEmergencyLog(string logPath, string logFileName)
+        {
+            _EmergencyLog = Create(new List<LogWriter>() { new Writers.FileLogWriter(logPath, logFileName) }, new List<LogFormatter>() { new Formatters.ExceptionFormatter() });
+        }
+
+        /// <summary>
+        /// Setup the emergency log with user defined settings
+        /// </summary>
+        /// <param name="emergencyLog"></param>
+        public static void SetupEmergencyLog(Log emergencyLog)
+        {
+            _EmergencyLog = emergencyLog;
+        }
+
+        public static Log EmergencyLog
+        {
+            get
+            {
+                return _EmergencyLog;
+            }
+        }
+
+        /// <summary>
+        ///  Writes an entry in the Emergency log
+        /// </summary>
+        /// <param name="logEntry">The log entry to write</param>
+        /// <param name="exception">The exception to attach to the log entry</param>
+        private static async void WriteEmergencyLog(LogEntry logEntry, Exception exception)
+        {
+            if (_EmergencyLog == null)
+            {
+                throw new InvalidOperationException("Cannot write exceptions to the Emergency log before it has been setup. Use the SetupEmergencyLog() methods to create a log first");
+            }
+            if (logEntry == null)
+            {
+                throw new ArgumentNullException("logEntry");
+            }
+            if (exception == null)
+            {
+                throw new ArgumentNullException("exception");
+            }
+            try
+            {
+                bool b = await EmergencyLog.WriteLogEntryAsync<Exception>(logEntry, exception, EmergencyLogSettings.ThrowExceptions);
+                if (!b)
+                {
+                    throw new InvalidOperationException(string.Format("An Emergency log was not written: {0} with the title {1}", logEntry.Id, logEntry.Title), exception);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(string.Format("An Emergency log was not written: {0} with the title {1}", logEntry.Id, logEntry.Title), ex);
+            }
+        }
+
+        #endregion
+
         #region static methods
+
+
+
+
 
         private static Log _default;
 
@@ -71,7 +174,7 @@ namespace TinyLog
                 Exception ex;
                 if (!writer.TryInitialize(out ex))
                 {
-                    throw new InvalidOperationException("A log writer failed to initialize: {0}",ex);
+                    throw new InvalidOperationException("A log writer failed to initialize: {0}", ex);
                 }
             });
             if (subscribers != null)
@@ -126,7 +229,7 @@ namespace TinyLog
             if (!writer.TryInitialize(out ex))
             {
                 // TODO: Use an emergency log to log these errors as well?
-                throw new InvalidOperationException("The log writer failed to initialize",ex);
+                throw new InvalidOperationException("The log writer failed to initialize", ex);
             }
             else
             {
@@ -156,38 +259,92 @@ namespace TinyLog
         /// Writes a new log entry to the log
         /// </summary>
         /// <param name="logEntry">The LogEntry object to write</param>
+        /// <param name="emergencyLogSetting">The emergency log setting to use in the write operation. If null, the global emergency log setting will be used</param>
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
-        public Task<bool> WriteLogEntryAsync(LogEntry logEntry)
+        public Task<bool> WriteLogEntryAsync(LogEntry logEntry, EmergencyLogSettings? emergencyLogSetting = null)
         {
-            return Task.FromResult<bool>(WriteLogEntry(logEntry));
+            return Task.FromResult<bool>(WriteLogEntry(logEntry,emergencyLogSetting ?? EmergencyLogSetting));
         }
 
         /// <summary>
         /// Writes a new log entry to the log
         /// </summary>
         /// <param name="logEntry">The LogEntry object to write</param>
+        /// <param name="emergencyLogSetting">The emergency log setting to use in the write operation</param>
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
-        public bool WriteLogEntry(LogEntry logEntry)
+        public bool WriteLogEntry(LogEntry logEntry, EmergencyLogSettings emergencyLogSetting)
         {
             int errors = -1;
             IEnumerable<LogWriter> current = _writers.Where(x => x.Filter.IsMatch(logEntry));
+            ConcurrentBag<Exception> parallelExceptions = new ConcurrentBag<Exception>();
             if (current.Count() > 0)
             {
                 errors = 0;
+
                 Parallel.ForEach<LogWriter>(current, async writer =>
                 {
-                    Tuple<bool, Exception> result = await writer.TryWriteLogEntryAsync(logEntry);
-                    if (!result.Item1)
+                    try
+                    {
+                        Tuple<bool, Exception> result = await writer.TryWriteLogEntryAsync(logEntry);
+                        if (!result.Item1)
+                        {
+                            parallelExceptions.Add(result.Item2);
+                            System.Threading.Interlocked.Add(ref errors, 1);
+                        }
+                    }
+                    catch (Exception writeException)
                     {
                         System.Threading.Interlocked.Add(ref errors, 1);
+                        parallelExceptions.Add(writeException);
                     }
                 });
+
+                if (parallelExceptions.Count > 0)
+                {
+                    switch (emergencyLogSetting)
+                    {
+                        case EmergencyLogSettings.Ignore:
+                            break;
+                        case EmergencyLogSettings.AddToEmergencyLog:
+                            WriteEmergencyLog(LogEntry.Copy(logEntry), new AggregateException(parallelExceptions));
+                            break;
+                        case EmergencyLogSettings.ThrowExceptions:
+                            throw new AggregateException("Unhandled errors occured in one or more log writers", parallelExceptions);
+                        default:
+                            break;
+                    }
+                }
             }
-            
+
+            parallelExceptions = new ConcurrentBag<Exception>();
             Parallel.ForEach(_subscribers.Where(x => x.Filter.IsMatch(logEntry)), async subscriber =>
                 {
-                    await subscriber.ReceiveAsync(logEntry, errors == 0);
+                    try
+                    {
+                        await subscriber.ReceiveAsync(logEntry, errors == 0);
+                    }
+                    catch (Exception subscriberException)
+                    {
+                        parallelExceptions.Add(subscriberException);
+                    }
+
                 });
+
+            if (parallelExceptions.Count > 0)
+            {
+                switch (emergencyLogSetting)
+                {
+                    case EmergencyLogSettings.Ignore:
+                        break;
+                    case EmergencyLogSettings.AddToEmergencyLog:
+                        WriteEmergencyLog(LogEntry.Copy(logEntry), new AggregateException(parallelExceptions));
+                        break;
+                    case EmergencyLogSettings.ThrowExceptions:
+                        throw new AggregateException("Unhandled errors occured in one or more log writers", parallelExceptions);
+                    default:
+                        break;
+                }
+            }
 
             return errors == 0;
         }
@@ -197,10 +354,11 @@ namespace TinyLog
         /// Writes a new log entry to the log
         /// </summary>
         /// <param name="logEntry">The LogEntry object to write</param>
+        /// <param name="emergencyLogSetting">The emergency log setting to use in the write operation. If null, the global emergency log setting will be used</param>
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
-        public bool WriteLogEntry(LogEntry logEntry, object customData)
+        public bool WriteLogEntry(LogEntry logEntry, object customData, EmergencyLogSettings? emergencyLogSetting = null)
         {
-            return WriteLogEntry<object>(logEntry, customData);
+            return WriteLogEntry<object>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting);
         }
 
         /// <summary>
@@ -208,10 +366,11 @@ namespace TinyLog
         /// </summary>
         /// <param name="logEntry"></param>
         /// <param name="customData"></param>
+        /// <param name="emergencyLogSetting">The emergency log setting to use in the write operation. If null, the global emergency log setting will be used</param>
         /// <returns></returns>
-        public Task<bool> WriteLogEntryAsync(LogEntry logEntry, object customData)
+        public Task<bool> WriteLogEntryAsync(LogEntry logEntry, object customData, EmergencyLogSettings? emergencyLogSetting = null)
         {
-            return Task.FromResult<bool>(WriteLogEntry<object>(logEntry, customData));
+            return Task.FromResult<bool>(WriteLogEntry<object>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting));
         }
 
         /// <summary>
@@ -220,10 +379,11 @@ namespace TinyLog
         /// <typeparam name="T">The type of custom data to format the log entry with</typeparam>
         /// <param name="logEntry">the LogEntry object to write</param>
         /// <param name="customData">The custom data for the log entry</param>
+        /// <param name="emergencyLogSetting">The emergency log setting to use in the write operation. If null, the global emergency log setting will be used</param>
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
-        public Task<bool> WriteLogEntryAsync<T>(LogEntry logEntry, T customData)
+        public Task<bool> WriteLogEntryAsync<T>(LogEntry logEntry, T customData, EmergencyLogSettings? emergencyLogSetting = null)
         {
-            return Task.FromResult<bool>(WriteLogEntry<T>(logEntry, customData));
+            return Task.FromResult<bool>(WriteLogEntry<T>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting));
         }
 
         /// <summary>
@@ -232,21 +392,44 @@ namespace TinyLog
         /// <typeparam name="T">The type of custom data to format the log entry with</typeparam>
         /// <param name="logEntry">the LogEntry object to write</param>
         /// <param name="customData">The custom data for the log entry</param>
+        /// <param name="emergencyLogSetting">The emergency log setting to use in the write operation</param>
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
-        public bool WriteLogEntry<T>(LogEntry logEntry, T customData)
+        public bool WriteLogEntry<T>(LogEntry logEntry, T customData, EmergencyLogSettings? emergencyLogSetting = null)
         {
-            LogFormatter formatter = _formatters.FirstOrDefault(x => x.IsValidFormatterFor(customData));
-            if (formatter != null)
+            EmergencyLogSettings setting = emergencyLogSetting ?? EmergencyLogSetting;
+            try
             {
-                formatter.Format(logEntry, customData);
-                logEntry.CustomDataFormatter = logEntry.CustomDataFormatter ?? formatter.GetType().FullName;
+                LogFormatter formatter = _formatters.FirstOrDefault(x => x.IsValidFormatterFor(customData));
+                if (formatter != null)
+                {
+                    formatter.Format(logEntry, customData);
+                    logEntry.CustomDataFormatter = logEntry.CustomDataFormatter ?? formatter.GetType().FullName;
+                }
+                else
+                {
+                    logEntry.CustomData = string.Format("No formatter available for: {0}", customData);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                logEntry.CustomData = string.Format("No formatter available for:   {0}", customData);
+                switch (setting)
+                {
+                    case EmergencyLogSettings.Ignore:
+                        break;
+                    case EmergencyLogSettings.AddToEmergencyLog:
+                        WriteEmergencyLog(LogEntry.Copy(logEntry), ex);
+                        break;
+                    case EmergencyLogSettings.ThrowExceptions:
+                        throw new InvalidOperationException("The log entry formatter failed to format the log entry", ex);
+                    default:
+                        break;
+                }
             }
-            return WriteLogEntry(logEntry);
+            
+            return WriteLogEntry(logEntry, setting);
         }
+
+        
 
 
 

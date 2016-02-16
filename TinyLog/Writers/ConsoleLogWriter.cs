@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 namespace TinyLog.Writers
 {
     /// <summary>
-    /// A log writer that outputs to the attached debugger. Mainly used in development environments
+    /// A log writer that outputs to the attached console. Mainly used in development environments
     /// </summary>
-    public class DebuggerLogWriter : LogWriter
+    public class ConsoleLogWriter : LogWriter
     {
-        public DebuggerLogWriter(LogEntryFilter filter = null)
+        public ConsoleLogWriter(LogEntryFilter filter = null)
         {
             if (filter != null)
             {
@@ -23,14 +23,14 @@ namespace TinyLog.Writers
             initializeException = null;
             try
             {
-                if (!Debugger.IsAttached || !Debugger.IsLogging())
-                {
-                    Debugger.Launch();
-                    //initializeException = new InvalidOperationException("There is no debugger attached or the attached debugger is not enabled for logging");
-                    //return false;
-                }
-                
-                Debug.WriteLine(string.Format("The LogWriter '{0}' was initialized", this.GetType().FullName), Enum.GetName(typeof(LogEntrySeverity), LogEntrySeverity.Verbose));
+                //if (!Debugger.IsAttached || !Debugger.IsLogging())
+                //{
+                //    Debugger.Launch();
+                //    //initializeException = new InvalidOperationException("There is no debugger attached or the attached debugger is not enabled for logging");
+                //    //return false;
+                //}
+
+                Console.WriteLine(string.Format("The LogWriter '{0}' was initialized", this.GetType().FullName), Enum.GetName(typeof(LogEntrySeverity), LogEntrySeverity.Verbose));
                 return true;
             }
             catch (Exception ex)
@@ -38,7 +38,7 @@ namespace TinyLog.Writers
                 initializeException = ex;
                 return false;
             }
-            
+
         }
 
         public override bool TryWriteLogEntry(LogEntry logEntry, out Exception writeException)
@@ -46,7 +46,7 @@ namespace TinyLog.Writers
             writeException = null;
             try
             {
-                Debug.WriteLine(FormateLogMessage(logEntry), logEntry.SeverityString);
+                Console.WriteLine("[{0}]:\r\n{1}", logEntry.SeverityString, FormateLogMessage(logEntry));
                 return true;
             }
             catch (Exception ex)

@@ -18,14 +18,14 @@ namespace TinyLog.Formatters
             DateParseHandling = DateParseHandling.DateTimeOffset
         };
 
-        public override bool IsValidFormatterFor(object customData)
-        {
-            if (customData is ISerializable || customData is IList || customData is ICollection)
-            {
-                return true;
-            }
-            return base.IsValidFormatterFor(customData);
-        }
+        //public override bool IsValidFormatterFor(object customData)
+        //{
+        //    if (customData is ISerializable || customData is IList || customData is ICollection)
+        //    {
+        //        return true;
+        //    }
+        //    return base.IsValidFormatterFor(customData);
+        //}
 
         protected override void FormatLogEntry(LogEntry logEntry, object customData)
         {
