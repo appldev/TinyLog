@@ -13,7 +13,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyLog.MSMQ", "TinyLog.MSM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyLog.Mvc", "TinyLog.Mvc\TinyLog.Mvc.csproj", "{D1E1717D-D6FC-402F-AF63-7AA16DEF694F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinySql.Sql", "TinySql.Sql\TinySql.Sql.csproj", "{BE0E2983-30B6-4804-8783-C88C1F52A029}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{42AD41B6-9814-4EE3-92A1-AFE40AD9806D}"
+	ProjectSection(SolutionItems) = preProject
+		nuspec\build-nuget-package-core.bat = nuspec\build-nuget-package-core.bat
+		nuspec\build-nuget-package-full.bat = nuspec\build-nuget-package-full.bat
+		nuspec\nuget.exe = nuspec\nuget.exe
+		nuspec\TinyLog-core.nuspec = nuspec\TinyLog-core.nuspec
+		nuspec\TinyLog-full.nuspec = nuspec\TinyLog-full.nuspec
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyLog.Sql", "TinyLog.Sql\TinyLog.Sql.csproj", "{BE0E2983-30B6-4804-8783-C88C1F52A029}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

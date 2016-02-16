@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TinyLog;
 using TinyLog.Writers;
-using TinySql.Writers;
+using TinyLog.Writers;
 
 namespace TinyLogTests
 {

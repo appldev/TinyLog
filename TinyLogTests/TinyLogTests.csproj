@@ -52,12 +52,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AllWritersBaseClass.cs" />
-    <Compile Include="ConsoleLogBaseClass.cs" />
-    <Compile Include="DebuggerLogBaseClass.cs" />
-    <Compile Include="FileLogBaseClass.cs" />
+    <Compile Include="BaseClasses\AllWritersBaseClass.cs" />
+    <Compile Include="BaseClasses\ConsoleLogBaseClass.cs" />
+    <Compile Include="BaseClasses\DebuggerLogBaseClass.cs" />
+    <Compile Include="BaseClasses\FileLogBaseClass.cs" />
     <Compile Include="LogHelpers.cs" />
-    <Compile Include="MessageQueueLogBaseClass.cs" />
+    <Compile Include="BaseClasses\MessageQueueLogBaseClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExceptionFormatterTests.cs" />
     <Compile Include="JsonSerilizationFormatterTests.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="MessageQueueSubscriberTests.cs" />
     <Compile Include="DebuggerLogWriterTests.cs" />
     <Compile Include="ConsoleLogWriterTests.cs" />
-    <Compile Include="SqlLogBaseClass.cs" />
+    <Compile Include="BaseClasses\SqlLogBaseClass.cs" />
     <Compile Include="SqlLogWriterTests.cs" />
     <Compile Include="AllWritersTests.cs" />
     <Compile Include="XmlSerializationFormatterTests.cs" />
@@ -81,13 +81,13 @@
       <Project>{63d7dc94-d6cc-4ffc-bfcf-d12be2ea0b77}</Project>
       <Name>TinyLog.MSMQ</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TinyLog.Sql\TinyLog.Sql.csproj">
+      <Project>{be0e2983-30b6-4804-8783-c88c1f52a029}</Project>
+      <Name>TinyLog.Sql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TinyLog\TinyLog.csproj">
       <Project>{5ac41ab1-48f6-4a19-9205-94eccb35fec4}</Project>
       <Name>TinyLog</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TinySql.Sql\TinySql.Sql.csproj">
-      <Project>{be0e2983-30b6-4804-8783-c88c1f52a029}</Project>
-      <Name>TinySql.Sql</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

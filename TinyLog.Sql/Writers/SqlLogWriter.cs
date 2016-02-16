@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
-using TinyLog;
-using TinySql.Sql;
+using TinyLog.Sql;
 
-namespace TinySql.Writers
+namespace TinyLog.Writers
 {
     public class SqlLogWriter : LogWriter
     {

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>TinyLog-Full</id>
+    <version>1.0.0</version>
+    <title>TinyLog-Full</title>
+    <authors>Michael Randrup</authors>
+    <owners>michaelrandrup</owners>
+    <licenseUrl>http://github.com/appldev/TinyLog/blob/master/LICENSE</licenseUrl>
+    <projectUrl>http://appldev.github.io/TinyLog</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>TinyLog is a light-weight, simple and yet very comprehensive and powefull Logging Provider for .NET Applications.</description>
+    <summary>This is the Full package that includes the TinyLog.Json, TinyLog.MSMQ and TinyLog.Sql assemblies. These extra assemblies extends the core functionality with specific Log formatters, Log Writers and Log Subscribers. You can download the core packages to get core logging support and building your own log formatters, log writers and log subscribers.</summary>
+    <releaseNotes>
+      Visit the project on GitHub for Getting Started and usage examples
+    </releaseNotes>
+    <language>en-US</language>
+    <tags>Logging .NET C#</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="8.0.2" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Core" targetFramework="net452" />
+      <frameworkAssembly assemblyName="System.Data" targetFramework="net452" />
+      <frameworkAssembly assemblyName="System.Xml" targetFramework="net452" />
+      <frameworkAssembly assemblyName="System.Messaging" targetFramework="net452" />
+      <frameworkAssembly assemblyName="System.Transactions" targetFramework="net452" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
