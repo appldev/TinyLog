@@ -1,7 +1,7 @@
-# Getting Started
+#Getting Started
 TinyLog is a light-weight, simple and yet very comprehensive and powerful Logging Provider for .NET Applications.
 
-## Included backend storage (Log Writers)
+##Included backend storage (Log Writers)
 Although you can write your own Log Writers with less than 50 lines of code, TinyLog includes Log Writers for the following backend storages:
 - **File based** logs (one file or day-by-day rollover)
 - **Message Queue** logs (logs stored in Microsoft MSMQ)
@@ -14,10 +14,10 @@ _Example: You could log everything to a file log and only logs with a severity l
 
 
 
-## Basic setup
+##Basic setup
 The code below shows the very basic functionality of TintLog. It shows how quick you can setup log formatters and writers and start logging your applications.
 
-````C#
+```C#
             // First we setup a Log writer, that will store the log entries we submit
             TinyLog.Log.Default.RegisterLogWriter(new FileLogWriter(System.IO.Path.GetTempPath()));
 
@@ -54,4 +54,15 @@ The code below shows the very basic functionality of TintLog. It shows how quick
 
             // The custom data log will be json serialized and logged both in the Mesage Queue and in the log file in the temp folder
             TinyLog.Log.Default.WriteLogEntry<object>(entry, myObj);
-````
+```
+____
+#### Report an issue
+Use the Issues tab to log any issues or feature requests
+
+#### Contribute
+You are welcome to contribute with fixes and enhancements.
+
+1. Fork the project
+2. Make your changes and Unit tests
+3. Create a pull request with a description of your changes and links to any issues solved
+
