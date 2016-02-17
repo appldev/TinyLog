@@ -1,0 +1,32 @@
+﻿@using TinyLog
+@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    
+    ViewBag.Title = "Error";
+    LogEntry log = ViewBag.LogEntry;
+}
+
+<h1 class="text-danger">The following error occured: @log.Title</h1>
+<h2 class="text-danger">@log.Message</h2>
+<hr />
+<h3 class="text-warning">The following has been logged:</h3>
+<ul>
+    <li><strong>Id: </strong>@log.Id</li>
+    <li><strong>Created on: </strong>@log.CreatedOnString</li>
+    <li><strong>Source: </strong>@log.Source</li>
+    <li><strong>Area: </strong>@log.Area</li>
+    <li><strong>Id: </strong>@log.SeverityString</li>
+    <li><strong>Client: </strong>@log.Client</li>
+    <li><strong>Client info: </strong>@log.ClientInfo</li>
+    <li><strong>Error data provided by: </strong>@log.CustomDataFormatter</li>
+</ul>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="alert alert-danger">
+            @Html.Raw(log.CustomData)
+        </div>
+    </div>
+</div>
+
+

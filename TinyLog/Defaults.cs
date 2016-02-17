@@ -10,6 +10,15 @@
         /// General Application logs
         /// </summary>
         public static readonly string Application = "Application";
+        /// <summary>
+        /// An error that occured in a web client. Example: a javascript that fails, etc.
+        /// </summary>
+        public static readonly string WebClient = "WebClient";
+        /// <summary>
+        /// An error that occured on the web server
+        /// </summary>
+        public static readonly string WebServer = "WebServer";
+
 
 
     }
