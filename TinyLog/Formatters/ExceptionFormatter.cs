@@ -10,7 +10,7 @@ namespace TinyLog.Formatters
     /// </summary>
     public class ExceptionFormatter : LogFormatter
     {
-        public ExceptionFormatter() : base(typeof(Exception), true)
+        public ExceptionFormatter() : base(new Type[] { typeof(Exception) }, true)
         {
         }
 

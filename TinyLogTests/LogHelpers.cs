@@ -10,6 +10,7 @@ namespace TinyLogTests
 {
     public static class LogHelpers
     {
+        [Serializable]
         public class Company
         {
             public string Name { get; set; }
@@ -17,6 +18,7 @@ namespace TinyLogTests
             public List<Person> People { get; set; } = new List<Person>();
         }
 
+        [Serializable]
         public class Person
         {
             public string Name { get; set; }

@@ -89,6 +89,7 @@ namespace TinyLog.Writers
                     sb.Append(Append(logEntry.Message, "\""));
                     sb.Append(Append(logEntry.CustomData, "\""));
                     sb.Append(Append(logEntry.CustomDataFormatter, "\""));
+                    sb.Append(Append(logEntry.CustomDataType, "\""));
                     sb.AppendLine();
                     File.AppendAllText(file, sb.ToString(), Encoding.UTF8);
                     return true;
@@ -114,7 +115,7 @@ namespace TinyLog.Writers
 
         private string CreateHeader()
         {
-            return "CreatedOn;Id;Severity;Title;Source;Area;Client;ClientInfo;Message;CustomData;CustomDataFormatter\r\n";
+            return "CreatedOn;Id;Severity;Title;Source;Area;Client;ClientInfo;Message;CustomData;CustomDataFormatter;CustomDataType\r\n";
         }
 
         private string Append(string info, string quote)

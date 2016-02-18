@@ -471,11 +471,11 @@ namespace TinyLog
                 if (formatter != null)
                 {
                     formatter.Format(logEntry, customData);
-                    logEntry.CustomDataFormatter = logEntry.CustomDataFormatter ?? formatter.GetType().FullName;
                 }
                 else
                 {
-                    logEntry.CustomData = string.Format("No formatter available for: {0}", customData);
+                    throw new InvalidOperationException(string.Format("No formatter available for: {0}", customData));
+                    // logEntry.CustomData = string.Format("No formatter available for: {0}", customData);
                 }
             }
             catch (Exception ex)
