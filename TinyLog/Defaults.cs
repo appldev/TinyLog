@@ -15,10 +15,15 @@
         /// </summary>
         public static readonly string WebClient = "WebClient";
         /// <summary>
-        /// An error that occured on the web server
+        /// An error that occured on the web server within the ASP.NET process
         /// </summary>
-        public static readonly string WebServer = "WebServer";
+        public static readonly string ASPNETWebServer = "ASP.NET Web Server";
+        /// <summary>
+        /// An error that occured on the web server within the IIS process
+        /// </summary>
+        public static readonly string IISWebServer = "IIS Web Server";
 
+        public static readonly string MVCController = "MVC Controller";
 
 
     }

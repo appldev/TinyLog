@@ -1,32 +1,32 @@
 ﻿@using TinyLog
-@model System.Web.Mvc.HandleErrorInfo
+@model TinyLog.Mvc.TinyLogHandleErrorInfo
 
 @{
-    
+
     ViewBag.Title = "Error";
-    LogEntry log = ViewBag.LogEntry;
+    
 }
 
-<h1 class="text-danger">The following error occured: @log.Title</h1>
-<h2 class="text-danger">@log.Message</h2>
+<h1 class="text-danger">We're sorry but a HTTP @Model.StatusCode error occured: @Model.LogEntry.Title</h1>
+<h2 class="text-danger">@Model.LogEntry.Message</h2>
 <hr />
 <h3 class="text-warning">The following has been logged:</h3>
 <ul>
-    <li><strong>Id: </strong>@log.Id</li>
-    <li><strong>Correlation Id: </strong>@log.CorrelationId</li>
-    <li><strong>Created on: </strong>@log.CreatedOnString</li>
-    <li><strong>Source: </strong>@log.Source</li>
-    <li><strong>Area: </strong>@log.Area</li>
-    <li><strong>Id: </strong>@log.SeverityString</li>
-    <li><strong>Client: </strong>@log.Client</li>
-    <li><strong>Client info: </strong>@log.ClientInfo</li>
-    <li><strong>Error data provided by: </strong>@log.CustomDataFormatter</li>
+    <li><strong>Id: </strong>@Model.LogEntry.Id</li>
+    <li><strong>Correlation Id: </strong>@Model.LogEntry.CorrelationId</li>
+    <li><strong>Created on: </strong>@Model.LogEntry.CreatedOnString</li>
+    <li><strong>Source: </strong>@Model.LogEntry.Source</li>
+    <li><strong>Area: </strong>@Model.LogEntry.Area</li>
+    <li><strong>Severity: </strong>@Model.LogEntry.SeverityString</li>
+    <li><strong>Client: </strong>@Model.LogEntry.Client</li>
+    <li><strong>Client info: </strong>@Model.LogEntry.ClientInfo</li>
+    <li><strong>Error data provided by: </strong>@Model.LogEntry.CustomDataFormatter</li>
 </ul>
 <div class="row">
     <div class="col-lg-12">
-        <div class="alert alert-danger">
-            @Html.Raw(log.CustomData)
-        </div>
+            <h4>Error data</h4>
+        <pre><code>@Model.LogEntry.CustomData</code></pre>
+        
     </div>
 </div>
 

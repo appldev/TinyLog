@@ -56,6 +56,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -105,6 +107,26 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Full.1.0.1\lib\net45\TinyLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TinyLog.Json, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Full.1.0.1\lib\net45\TinyLog.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TinyLog.MSMQ, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Full.1.0.1\lib\net45\TinyLog.MSMQ.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TinyLog.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Mvc.1.0.0\lib\net45\TinyLog.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TinyLog.Sql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Full.1.0.1\lib\net45\TinyLog.Sql.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -247,28 +269,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TinyLog.Json\TinyLog.Json.csproj">
-      <Project>{580464dc-1517-4fe2-b7c8-14a6a1dc5c3b}</Project>
-      <Name>TinyLog.Json</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TinyLog.MSMQ\TinyLog.MSMQ.csproj">
-      <Project>{63d7dc94-d6cc-4ffc-bfcf-d12be2ea0b77}</Project>
-      <Name>TinyLog.MSMQ</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TinyLog.Mvc\TinyLog.Mvc.csproj">
-      <Project>{d1e1717d-d6fc-402f-af63-7aa16def694f}</Project>
-      <Name>TinyLog.Mvc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TinyLog.Sql\TinyLog.Sql.csproj">
-      <Project>{be0e2983-30b6-4804-8783-c88c1f52a029}</Project>
-      <Name>TinyLog.Sql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TinyLog\TinyLog.csproj">
-      <Project>{5ac41ab1-48f6-4a19-9205-94eccb35fec4}</Project>
-      <Name>TinyLog</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

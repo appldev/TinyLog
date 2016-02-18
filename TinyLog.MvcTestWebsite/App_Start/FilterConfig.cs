@@ -1,6 +1,5 @@
-﻿using System.Web;
-using System.Web.Mvc;
-using TinyLog.Mvc;
+﻿using System.Web.Mvc;
+
 
 namespace TinyLog.MvcTestWebsite
 {
@@ -8,9 +7,8 @@ namespace TinyLog.MvcTestWebsite
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            // filters.Add(new HandleErrorAttribute());
-            filters.Add(new TinyLogHandleErrorAttribute());
-            filters.Add(new TinyLogVerboseActionFilterAttribute());
+            TinyLog.Mvc.Helpers.RegisterGlobalFilters(filters,true);
+            
         }
     }
 }

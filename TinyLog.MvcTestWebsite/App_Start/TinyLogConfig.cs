@@ -16,8 +16,6 @@ namespace TinyLog.MvcTestWebsite
             Log.Default.RegisterLogFormatter(new JsonSerializationFormatter());
             Log.Default.RegisterLogFormatter(new ActionFilterLogFormatter());
             Log.Default.RegisterLogFormatter(new ExceptionFormatter());
-            
-
         }
     }
 }

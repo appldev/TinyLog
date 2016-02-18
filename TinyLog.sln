@@ -17,9 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{42AD41
 	ProjectSection(SolutionItems) = preProject
 		nuspec\build-nuget-package-core.bat = nuspec\build-nuget-package-core.bat
 		nuspec\build-nuget-package-full.bat = nuspec\build-nuget-package-full.bat
+		nuspec\build-nuget-package-mvc.bat = nuspec\build-nuget-package-mvc.bat
 		nuspec\nuget.exe = nuspec\nuget.exe
 		nuspec\TinyLog-core.nuspec = nuspec\TinyLog-core.nuspec
 		nuspec\TinyLog-full.nuspec = nuspec\TinyLog-full.nuspec
+		nuspec\TinyLog-mvc.nuspec = nuspec\TinyLog-mvc.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyLog.Sql", "TinyLog.Sql\TinyLog.Sql.csproj", "{BE0E2983-30B6-4804-8783-C88C1F52A029}"
