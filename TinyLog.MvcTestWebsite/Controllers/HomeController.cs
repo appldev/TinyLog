@@ -10,6 +10,8 @@ namespace TinyLog.MvcTestWebsite.Controllers
     {
         public ActionResult Index()
         {
+            Session["USER"] = "MYUSER";
+            ViewData["MyItem"] = new { Name = "Michael", Age = 44 };
             return View();
         }
 
@@ -17,7 +19,7 @@ namespace TinyLog.MvcTestWebsite.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-            if (r.Next(1,10) % 2 == 0)
+            if (r.Next(1, 10) % 2 == 0)
             {
                 throw new HttpUnhandledException("A unhandled error occured. go Fish.");
             }

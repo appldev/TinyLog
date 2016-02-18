@@ -73,8 +73,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomData\ControllerContextData.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Formatters\ControllerContextFormatter.cs" />
+    <Compile Include="HttpRequestBaseContractResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TinyLogHandleErrorAttribute.cs" />
     <Compile Include="TinyLogVerboseActionFilterAttribute.cs" />

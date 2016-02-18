@@ -14,8 +14,10 @@ namespace TinyLog.MvcTestWebsite
             string ConnectionString = "Data Source=(localdb)\\ProjectsV12;Initial Catalog=TinyLogDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             Log.Default.RegisterLogWriter(new SqlLogWriter(ConnectionString));
             Log.Default.RegisterLogFormatter(new JsonSerializationFormatter());
+            Log.Default.RegisterLogFormatter(new ActionFilterLogFormatter());
             Log.Default.RegisterLogFormatter(new ExceptionFormatter());
             
+
         }
     }
 }

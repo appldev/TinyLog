@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using TinyLog.CustomData;
 
 namespace TinyLog.Mvc
 {
@@ -18,10 +19,9 @@ namespace TinyLog.Mvc
             object source = _DefaultLogEntry.Source ?? (filterContext.RouteData.Values["controller"] ?? TinyLog.LogEntrySourceDefaults.WebServer);
             object area = _DefaultLogEntry.Area ?? (filterContext.RouteData.Values["action"] ?? TinyLog.LogAreaDefaults.LogFormatter);
             LogEntry entry = LogEntry.Error(title, message, (string)source, (string)area);
-            // filterContext.Controller.ViewBag.LogEntry = entry;
-            // filterContext.Controller.TempData.Add("LogEntry", entry);
+            entry.CorrelationId = (Guid?)filterContext.HttpContext.Items["ActionFilterAttributeCorrelationId"];
             ((System.Web.Mvc.ViewResult)filterContext.Result).ViewData.Add("LogEntry", entry);
-            filterContext.ExceptionHandled = TinyLog.Log.Default.WriteLogEntry<Exception>(entry, filterContext.Exception);
+            filterContext.ExceptionHandled = TinyLog.Log.Default.WriteLogEntry<ActionFilterCustomData>(entry, ActionFilterCustomData.FromExceptionContext(filterContext));
             
         }
     }

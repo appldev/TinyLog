@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using TinyLog.CustomData;
 
 namespace TinyLog.Mvc
 {
@@ -37,14 +38,18 @@ namespace TinyLog.Mvc
         {
             object source = context.RouteData.Values["controller"] ?? context.Controller.GetType().Name;
             object area = context.RouteData.Values["action"] ?? "";
-            return LogEntry.Verbose((string)source, (string)area, title);
+            LogEntry entry = LogEntry.Verbose((string)source, (string)area, title);
+            entry.CorrelationId = (Guid?)context.HttpContext.Items["ActionFilterAttributeCorrelationId"];
+            return entry;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            
+            filterContext.HttpContext.Items["ActionFilterAttributeCorrelationId"] = Guid.NewGuid();
             if ((VerboseLogEvents & VerboseLogEvent.OnActionExecuting) == VerboseLogEvent.OnActionExecuting)
             {
-                log.WriteLogEntry<object>(LogEntry.Verbose(filterContext.ActionDescriptor.ControllerDescriptor.ControllerName, filterContext.ActionDescriptor.ActionName, "OnActionExecuting"), filterContext.Controller.ControllerContext.RouteData.Values);
+                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnActionExecuting"), ActionFilterCustomData.FromActionExecuting(filterContext));
             }
         }
 
@@ -52,15 +57,15 @@ namespace TinyLog.Mvc
         {
             if ((VerboseLogEvents & VerboseLogEvent.OnActionExecuted) == VerboseLogEvent.OnActionExecuted)
             {
-                log.WriteLogEntry<object>(LogEntry.Verbose(filterContext.ActionDescriptor.ControllerDescriptor.ControllerName, filterContext.ActionDescriptor.ActionName, "OnActionExecuted"), filterContext.Controller.ViewData);
+                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnActionExecuted"), ActionFilterCustomData.FromActionExecuted(filterContext));
             }
         }
-
+        
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
             if ((VerboseLogEvents & VerboseLogEvent.OnResultExecuting) == VerboseLogEvent.OnResultExecuting)
             {
-                log.WriteLogEntry<object>(FromContext(filterContext.Controller.ControllerContext, "OnResultExecuting"), filterContext.Controller.ViewBag);
+                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnResultExecuting"), ActionFilterCustomData.FromResultExecuting(filterContext));
             }
         }
 
@@ -68,7 +73,7 @@ namespace TinyLog.Mvc
         {
             if ((VerboseLogEvents & VerboseLogEvent.OnResultExecuted) == VerboseLogEvent.OnResultExecuted)
             {
-                log.WriteLogEntry<object>(FromContext(filterContext.Controller.ControllerContext, "OnResultExecuted"), filterContext.Controller.ViewData.Values);
+                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnResultExecuted"), ActionFilterCustomData.FromResultExecuted(filterContext));
             }
         }
 

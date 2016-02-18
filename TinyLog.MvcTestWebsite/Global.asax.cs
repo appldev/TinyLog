@@ -10,6 +10,10 @@ namespace TinyLog.MvcTestWebsite
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            
+        }
         protected void Application_Start()
         {
             TinyLogConfig.Initialize();
