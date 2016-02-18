@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>TinyLog-Full</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <title>TinyLog-Full</title>
     <authors>Michael Randrup</authors>
     <owners>michaelrandrup</owners>
-    <licenseUrl>http://github.com/appldev/TinyLog/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>http://github.com/appldev/TinyLog/blob/master/LICENSE.MD</licenseUrl>
     <projectUrl>http://appldev.github.io/TinyLog</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>TinyLog is a light-weight, simple and yet very comprehensive and powefull Logging Provider for .NET Applications.</description>
