@@ -195,5 +195,10 @@ namespace TinyLog
         /// The formatter used for providing custom data for the log entry, if any.
         /// </summary>
         public string CustomDataFormatter { get; set; }
+
+        /// <summary>
+        /// Contains the type of data contained in the CustomData property.
+        /// </summary>
+        public string CustomDataType { get; set; }
     }
 }
