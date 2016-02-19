@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using TinyLog.CustomData;
+using TinyLog.CustomData.Mvc;
 using TinyLog.Mvc;
 
 namespace TinyLog.Formatters
