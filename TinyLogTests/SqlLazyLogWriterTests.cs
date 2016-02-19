@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace TinyLogTests
 {
+
     [TestClass]
-    public class SqlLogWriterTests : SqlLogBaseClass
+    public class SqlLazyLogWriterTests : SqlLazyLogBaseClass
     {
         [TestInitialize]
         public void Initialize()
@@ -17,10 +18,11 @@ namespace TinyLogTests
         }
 
         [TestMethod]
-        public async Task Write100AggregateExceptions_SqlLogWriterTests()
+        public async Task Write100AggregateExceptions_SqlLazyLogWriterTests()
         {
             DateTime dt = DateTime.Now;
             int num = 0;
+
             for (int i = 0; i < 100; i++)
             {
                 bool b = await LogHelpers.WriteAggregateException(log);
@@ -31,9 +33,9 @@ namespace TinyLogTests
             Console.WriteLine("{0} exceptions written to {1}", num, DbPath);
         }
 
-
         [TestMethod]
-        public async Task Write50000Exceptions_SqlLogWriterTests()
+        [TestCategory("High Volume")]
+        public async Task Write50000Exceptions_SqlLazyLogWriterTests()
         {
             DateTime dt = DateTime.Now;
             int num = 0;
@@ -46,18 +48,7 @@ namespace TinyLogTests
             Console.WriteLine("{0} exceptions written to {1}", num, DbPath);
             Assert.IsTrue(num == 50000);
         }
-
-        [TestMethod]
-        public async Task Write100Exceptions_SqlLogWriterTests()
-        {
-            int num = 0;
-            for (int i = 0; i < 100; i++)
-            {
-                bool b = await LogHelpers.WriteException(log, new Exception("Exception #" + i.ToString()));
-                num += b ? 1 : 0;
-            }
-            Console.WriteLine("{0} exceptions written to {1}", num, DbPath);
-            Assert.IsTrue(num == 100);
-        }
     }
 }
+
+

@@ -30,7 +30,7 @@ namespace TinyLog
     /// <summary>
     /// This is the main Log class. All logging is configured and executed from this class.
     /// </summary>
-    public class Log
+    public class Log : IDisposable
     {
         #region ctor
 
@@ -98,7 +98,7 @@ namespace TinyLog
         /// </summary>
         /// <param name="logEntry">The log entry to write</param>
         /// <param name="exception">The exception to attach to the log entry</param>
-        private static async void WriteEmergencyLog(LogEntry logEntry, Exception exception)
+        public static async void WriteEmergencyLog(LogEntry logEntry, Exception exception)
         {
             if (_EmergencyLog == null)
             {
@@ -497,11 +497,45 @@ namespace TinyLog
             return WriteLogEntry(logEntry, setting, parallel);
         }
 
-        
 
 
 
 
+
+
+
+        #endregion
+
+        #region IDisposable Support
+
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    LogWriter writer;
+                    while (_writers.TryTake(out writer))
+                    {
+                        if (writer is IDisposable)
+                        {
+                            (writer as IDisposable).Dispose();
+                        }
+                    }
+                }
+                disposedValue = true;
+            }
+        }
+
+        /// <summary>
+        /// Disposes the Log by calling the Dispose method on all LogWriters that implements the IDisposable interface
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
         #endregion
     }
 }

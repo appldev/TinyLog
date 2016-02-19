@@ -39,6 +39,7 @@
     <Compile Include="Defaults.cs" />
     <Compile Include="Formatters\ExceptionFormatter.cs" />
     <Compile Include="Formatters\XmlSerializationFormatter.cs" />
+    <Compile Include="LazyLogWriter.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="LogEntryFilter.cs" />
     <Compile Include="LogFormatter.cs" />
