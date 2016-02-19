@@ -44,14 +44,18 @@ namespace TinyLogTests
         public void InitializeLog()
         {
             Console.WriteLine("initializing the log: {0}", DbPath);
-            log = Log.Create(new List<LogWriter>() { new LazyLogWriter(new SqlLogWriter(ConnectionString),1000) });
+            log = Log.Create(new List<LogWriter>() { new LazyLogWriter(new SqlLogWriter(ConnectionString),2000) });
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            log.Dispose();
-            log = null;
+            if (log != null)
+            {
+                log.Dispose();
+                log = null;
+            }
+            
         }
     }
 }

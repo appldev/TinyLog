@@ -38,7 +38,10 @@ namespace TinyLog
         {
             get
             {
-                return _Enabled;
+                lock(_EnabledLocker)
+                {
+                    return _Enabled;
+                }
             }
             protected set
             {
@@ -48,7 +51,7 @@ namespace TinyLog
                     {
                         if (_Timer == null)
                         {
-                            _Timer = new Timer(ProcessQueue, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(_Interval));
+                            _Timer = new Timer(ProcessQueue, null, TimeSpan.FromMilliseconds(_Interval), TimeSpan.FromMilliseconds(_Interval));
                         }
                         else
                         {
@@ -82,7 +85,7 @@ namespace TinyLog
         protected void Add(LogEntry logEntry)
         {
             _Queue.Enqueue(logEntry);
-            if (!_Enabled)
+            if (!Enabled)
             {
                 if (AutoFlush)
                 {
@@ -156,6 +159,7 @@ namespace TinyLog
         {
             if (_Queue.Count == 0)
             {
+                Enabled = false;
                 return;
             }
             else if (!Enabled)
@@ -174,8 +178,7 @@ namespace TinyLog
         public override bool TryInitialize(out Exception initializeException)
         {
             initializeException = null;
-            Enabled = _writer.TryInitialize(out initializeException);
-            return Enabled;
+            return _writer.TryInitialize(out initializeException);
         }
 
         /// <summary>
@@ -208,8 +211,15 @@ namespace TinyLog
         /// <returns>returns true if the log was sucessfully committed to the backend storage</returns>
         public override Task<Tuple<bool, Exception>> TryWriteLogEntryAsync(LogEntry logEntry)
         {
-            _Queue.Enqueue(logEntry);
-            return Task.FromResult<Tuple<bool, Exception>>(new Tuple<bool, Exception>(true, null));
+            try
+            {
+                Add(logEntry);
+                return Task.FromResult<Tuple<bool, Exception>>(new Tuple<bool, Exception>(true, null));
+            }
+            catch (Exception ex)
+            {
+                return Task.FromResult<Tuple<bool, Exception>>(new Tuple<bool, Exception>(false, ex));
+            }
         }
 
         #region IDisposable Support
@@ -225,9 +235,11 @@ namespace TinyLog
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects).
-                    _Timer.Dispose();
-                    if (_writer is IDisposable)
+                    if (_Timer != null)
+                    {
+                        _Timer.Dispose();
+                    }
+                    if (_writer != null && _writer is IDisposable)
                     {
                         (_writer as IDisposable).Dispose();
                     }
