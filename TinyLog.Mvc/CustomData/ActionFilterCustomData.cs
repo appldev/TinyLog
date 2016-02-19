@@ -8,17 +8,22 @@ namespace TinyLog.CustomData.Mvc
     /// </summary>
     public class ActionFilterCustomData
     {
+        public enum Details
+        {
+            Full,
+            Minimal
+        }
         public ActionFilterCustomData()
         {
 
         }
 
 
-        public static ActionFilterCustomData FromHttpContext(HttpContext context)
+        public static ActionFilterCustomData FromHttpContext(HttpContext context, Details detail = Details.Full)
         {
             return new ActionFilterCustomData()
             {
-                UserContext = UserContextCustomData.FromHttpContext(context),
+                UserContext = UserContextCustomData.FromHttpContext(context, detail),
                 RequestContext = RequestContextCustomData.FromHttpRequest(context.Request),
                 ResponseContext = ResponseContextCustomData.FromHttpResponse(context.Response),
                 HttpContext = new HttpContextCustomData()
@@ -41,7 +46,7 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="context">The context object to create the instance from</param>
         /// <returns>A new instance of the ActionFilterCustomData</returns>
-        public static ActionFilterCustomData FromExceptionContext(ExceptionContext context)
+        public static ActionFilterCustomData FromExceptionContext(ExceptionContext context, Details detail = Details.Full)
         {
 
             return new ActionFilterCustomData()
@@ -70,7 +75,7 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="context">The context object to create the instance from</param>
         /// <returns>A new instance of the ActionFilterCustomData</returns>
-        public static ActionFilterCustomData FromResultExecuted(ResultExecutedContext context)
+        public static ActionFilterCustomData FromResultExecuted(ResultExecutedContext context, Details detail = Details.Full)
         {
             return new ActionFilterCustomData()
             {
@@ -100,7 +105,7 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="context">The context object to create the instance from</param>
         /// <returns>A new instance of the ActionFilterCustomData</returns>
-        public static ActionFilterCustomData FromResultExecuting(ResultExecutingContext context)
+        public static ActionFilterCustomData FromResultExecuting(ResultExecutingContext context, Details detail = Details.Full)
         {
             return new ActionFilterCustomData()
             {
@@ -127,7 +132,7 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="context">The context object to create the instance from</param>
         /// <returns>A new instance of the ActionFilterCustomData</returns>
-        public static ActionFilterCustomData FromActionExecuted(ActionExecutedContext context)
+        public static ActionFilterCustomData FromActionExecuted(ActionExecutedContext context, Details detail = Details.Full)
         {
             return new ActionFilterCustomData()
             {
@@ -155,7 +160,7 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="context">The context object to create the instance from</param>
         /// <returns>A new instance of the ActionFilterCustomData</returns>
-        public static ActionFilterCustomData FromActionExecuting(ActionExecutingContext context)
+        public static ActionFilterCustomData FromActionExecuting(ActionExecutingContext context, Details detail = Details.Full)
         {
             return new ActionFilterCustomData()
             {

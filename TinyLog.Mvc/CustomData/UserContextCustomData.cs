@@ -19,7 +19,7 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="httpContext">The HttpContext</param>
         /// <returns>A new instance of the UserContextCustomData</returns>
-        public static UserContextCustomData FromHttpContext(HttpContext httpContext)
+        public static UserContextCustomData FromHttpContext(HttpContext httpContext, ActionFilterCustomData.Details detail)
         {
             HttpContextWrapper wrapper = new HttpContextWrapper(httpContext);
             return FromHttpContext(wrapper);
