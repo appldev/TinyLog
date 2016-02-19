@@ -4,7 +4,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 
-namespace TinyLog.CustomData
+namespace TinyLog.CustomData.Mvc
 {
     /// <summary>
     /// Contains information from the User context

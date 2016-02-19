@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace TinyLog.CustomData
+namespace TinyLog.CustomData.Mvc
 {
     /// <summary>
     /// Contains custom data about a Controller Action captured by an action filter attribute
