@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Web.Mvc;
 using TinyLog.CustomData;
 using TinyLog.Mvc;
 
@@ -10,7 +9,7 @@ namespace TinyLog.Formatters
     public class ActionFilterLogFormatter : LogFormatter
     {
         public ActionFilterLogFormatter(bool indentText = true)
-            : base(typeof(ActionFilterCustomData), false)
+            : base(new List<Type>() { typeof(ActionFilterCustomData) }, false)
         {
 
         }

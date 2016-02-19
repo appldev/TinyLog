@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
-using System.Collections;
-using System.Runtime.Serialization;
+using System;
+using System.Collections.Generic;
 
 namespace TinyLog.Formatters
 {
     public class JsonSerializationFormatter : LogFormatter
     {
-        public JsonSerializationFormatter(bool indentText = true) : base(typeof(object), true)
+        public JsonSerializationFormatter(bool indentText = true) : base(new List<Type>() { typeof(object) }, true)
         {
             indent = indentText ? Formatting.Indented : Formatting.None;
         }
