@@ -15,7 +15,11 @@ namespace TinyLog.Formatters
         private JsonSerializerSettings settings = new JsonSerializerSettings()
         {
             DateFormatHandling = DateFormatHandling.IsoDateFormat,
-            DateParseHandling = DateParseHandling.DateTimeOffset
+            DateParseHandling = DateParseHandling.DateTimeOffset,
+            PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+            ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+            TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple,
+            TypeNameHandling = TypeNameHandling.Objects
         };
 
         //public override bool IsValidFormatterFor(object customData)

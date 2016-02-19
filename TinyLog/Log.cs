@@ -30,7 +30,7 @@ namespace TinyLog
     /// <summary>
     /// This is the main Log class. All logging is configured and executed from this class.
     /// </summary>
-    public class Log
+    public class Log : IDisposable
     {
         #region ctor
 
@@ -98,7 +98,7 @@ namespace TinyLog
         /// </summary>
         /// <param name="logEntry">The log entry to write</param>
         /// <param name="exception">The exception to attach to the log entry</param>
-        private static async void WriteEmergencyLog(LogEntry logEntry, Exception exception)
+        public static async void WriteEmergencyLog(LogEntry logEntry, Exception exception)
         {
             if (_EmergencyLog == null)
             {
@@ -255,6 +255,9 @@ namespace TinyLog
             _subscribers.Add(subscriber);
         }
 
+
+
+
         /// <summary>
         /// Writes a new log entry to the log
         /// </summary>
@@ -266,38 +269,42 @@ namespace TinyLog
             return Task.FromResult<bool>(WriteLogEntry(logEntry,emergencyLogSetting ?? EmergencyLogSetting));
         }
 
+
+        /// <summary>
+        /// Writes a new log entry to the log
+        /// </summary>
+        /// <param name="logEntry">The LogEntry object to write</param>
+        /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
+        public bool WriteLogEntry(LogEntry logEntry)
+        {
+            return WriteLogEntry(logEntry, EmergencyLogSetting,false);
+        }
+
+        /// <summary>
+        /// Writes a new log entry to the log
+        /// </summary>
+        /// <param name="logEntry">The LogEntry object to write</param>
+        /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
+        public Task<bool> WriteLogEntryAsync(LogEntry logEntry)
+        {
+            return Task.FromResult<bool>(WriteLogEntry(logEntry, EmergencyLogSetting,true));
+        }
+
         /// <summary>
         /// Writes a new log entry to the log
         /// </summary>
         /// <param name="logEntry">The LogEntry object to write</param>
         /// <param name="emergencyLogSetting">The emergency log setting to use in the write operation</param>
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
-        public bool WriteLogEntry(LogEntry logEntry, EmergencyLogSettings emergencyLogSetting)
+        public bool WriteLogEntry(LogEntry logEntry, EmergencyLogSettings emergencyLogSetting, bool parallel)
         {
             int errors = -1;
             IEnumerable<LogWriter> current = _writers.Where(x => x.Filter.IsMatch(logEntry));
             ConcurrentBag<Exception> parallelExceptions = new ConcurrentBag<Exception>();
             if (current.Count() > 0)
             {
-                errors = 0;
-
-                Parallel.ForEach<LogWriter>(current, async writer =>
-                {
-                    try
-                    {
-                        Tuple<bool, Exception> result = await writer.TryWriteLogEntryAsync(logEntry);
-                        if (!result.Item1)
-                        {
-                            parallelExceptions.Add(result.Item2);
-                            System.Threading.Interlocked.Add(ref errors, 1);
-                        }
-                    }
-                    catch (Exception writeException)
-                    {
-                        System.Threading.Interlocked.Add(ref errors, 1);
-                        parallelExceptions.Add(writeException);
-                    }
-                });
+                parallelExceptions = WriteLog(current, logEntry, parallel);
+                errors = parallelExceptions.Count;
 
                 if (parallelExceptions.Count > 0)
                 {
@@ -315,21 +322,8 @@ namespace TinyLog
                     }
                 }
             }
-
-            parallelExceptions = new ConcurrentBag<Exception>();
-            Parallel.ForEach(_subscribers.Where(x => x.Filter.IsMatch(logEntry)), async subscriber =>
-                {
-                    try
-                    {
-                        await subscriber.ReceiveAsync(logEntry, errors == 0);
-                    }
-                    catch (Exception subscriberException)
-                    {
-                        parallelExceptions.Add(subscriberException);
-                    }
-
-                });
-
+            parallelExceptions = ActivateSubscribers(logEntry, errors == 0, parallel);
+            
             if (parallelExceptions.Count > 0)
             {
                 switch (emergencyLogSetting)
@@ -349,6 +343,80 @@ namespace TinyLog
             return errors == 0;
         }
 
+        private ConcurrentBag<Exception> ActivateSubscribers(LogEntry logEntry, bool created, bool parallel)
+        {
+            ConcurrentBag<Exception> exceptions = new ConcurrentBag<Exception>();
+            if (parallel)
+            {
+                Parallel.ForEach(_subscribers.Where(x => x.Filter.IsMatch(logEntry)), async subscriber =>
+                {
+                    try
+                    {
+                        await subscriber.ReceiveAsync(logEntry, created);
+                    }
+                    catch (Exception subscriberException)
+                    {
+                        exceptions.Add(subscriberException);
+                    }
+                });
+            }
+            else
+            {
+                foreach (LogSubscriber subscriber in _subscribers.Where(x => x.Filter.IsMatch(logEntry)))
+                {
+                    try
+                    {
+                        subscriber.Receive(logEntry, created);
+                    }
+                    catch (Exception subscriberException)
+                    {
+                        exceptions.Add(subscriberException);
+                    }
+                }
+            }
+            return exceptions;
+        }
+        private ConcurrentBag<Exception> WriteLog(IEnumerable<LogWriter> writers, LogEntry logEntry, bool parallel)
+        {
+            ConcurrentBag<Exception> exceptions = new ConcurrentBag<Exception>();
+            if (parallel)
+            {
+                Parallel.ForEach<LogWriter>(writers, async writer =>
+                {
+                    try
+                    {
+                        Tuple<bool, Exception> result = await writer.TryWriteLogEntryAsync(logEntry);
+                        if (!result.Item1)
+                        {
+                            exceptions.Add(result.Item2);
+                        }
+                    }
+                    catch (Exception writeException)
+                    {
+                        exceptions.Add(writeException);
+                    }
+                });
+            }
+            else
+            {
+                foreach (LogWriter writer in writers)
+                {
+                    try
+                    {
+                        Exception exception = new Exception();
+                        if (!writer.TryWriteLogEntry(logEntry, out exception))
+                        {
+                            exceptions.Add(exception);
+                        }
+                    }
+                    catch (Exception writeException)
+                    {
+                        exceptions.Add(writeException);
+                    }
+                }
+            }
+            return exceptions;
+        }
 
         /// <summary>
         /// Writes a new log entry to the log
@@ -370,7 +438,7 @@ namespace TinyLog
         /// <returns></returns>
         public Task<bool> WriteLogEntryAsync(LogEntry logEntry, object customData, EmergencyLogSettings? emergencyLogSetting = null)
         {
-            return Task.FromResult<bool>(WriteLogEntry<object>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting));
+            return Task.FromResult<bool>(WriteLogEntry<object>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting,true));
         }
 
         /// <summary>
@@ -383,7 +451,7 @@ namespace TinyLog
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
         public Task<bool> WriteLogEntryAsync<T>(LogEntry logEntry, T customData, EmergencyLogSettings? emergencyLogSetting = null)
         {
-            return Task.FromResult<bool>(WriteLogEntry<T>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting));
+            return Task.FromResult<bool>(WriteLogEntry<T>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting,true));
         }
 
         /// <summary>
@@ -394,7 +462,7 @@ namespace TinyLog
         /// <param name="customData">The custom data for the log entry</param>
         /// <param name="emergencyLogSetting">The emergency log setting to use in the write operation</param>
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
-        public bool WriteLogEntry<T>(LogEntry logEntry, T customData, EmergencyLogSettings? emergencyLogSetting = null)
+        public bool WriteLogEntry<T>(LogEntry logEntry, T customData, EmergencyLogSettings? emergencyLogSetting = null, bool parallel = false)
         {
             EmergencyLogSettings setting = emergencyLogSetting ?? EmergencyLogSetting;
             try
@@ -426,14 +494,48 @@ namespace TinyLog
                 }
             }
             
-            return WriteLogEntry(logEntry, setting);
+            return WriteLogEntry(logEntry, setting, parallel);
         }
 
-        
 
 
 
 
+
+
+
+        #endregion
+
+        #region IDisposable Support
+
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    LogWriter writer;
+                    while (_writers.TryTake(out writer))
+                    {
+                        if (writer is IDisposable)
+                        {
+                            (writer as IDisposable).Dispose();
+                        }
+                    }
+                }
+                disposedValue = true;
+            }
+        }
+
+        /// <summary>
+        /// Disposes the Log by calling the Dispose method on all LogWriters that implements the IDisposable interface
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
         #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace TinyLog
         /// TryInitialize is called immediately after adding a logwriter to the provider. It should check the backend storage
         /// and return true if the logwriter is valid for use. Only writers that return true is added to the provider
         /// </summary>
-        /// <param name="ErrorMessage">If TryInitialize returns false, ErrorMessage will contain the cause or error information</param>
+        /// <param name="initializeException">If TryInitialize returns false, initializeException will contain the cause or error information</param>
         /// <returns>true if the Log Writer is ready for use, otherwise false</returns>
         public abstract bool TryInitialize(out Exception initializeException);
 

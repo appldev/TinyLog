@@ -89,7 +89,7 @@ namespace TinyLogTests
                 {
                     if (i % 2 == 0)
                     {
-                        throw new Exception("Exception from number " + i.ToString());
+                        exceptions.Enqueue(new Exception("Exception from number " + i.ToString()));
                     }
                 }
                 catch (Exception e)

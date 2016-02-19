@@ -56,6 +56,8 @@
     <Compile Include="BaseClasses\ConsoleLogBaseClass.cs" />
     <Compile Include="BaseClasses\DebuggerLogBaseClass.cs" />
     <Compile Include="BaseClasses\FileLogBaseClass.cs" />
+    <Compile Include="BaseClasses\SqlLazyLogBaseClass.cs" />
+    <Compile Include="Examples\GettingStarted.cs" />
     <Compile Include="LogHelpers.cs" />
     <Compile Include="BaseClasses\MessageQueueLogBaseClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="BaseClasses\SqlLogBaseClass.cs" />
     <Compile Include="SqlLogWriterTests.cs" />
     <Compile Include="AllWritersTests.cs" />
+    <Compile Include="SqlLazyLogWriterTests.cs" />
     <Compile Include="XmlSerializationFormatterTests.cs" />
   </ItemGroup>
   <ItemGroup>
