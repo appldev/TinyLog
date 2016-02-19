@@ -66,6 +66,7 @@
     <Content Include="Database\TinyLogDb_log.ldf">
       <DependentUpon>TinyLogDb.mdf</DependentUpon>
     </Content>
+    <Content Include="Database\update-table-tinylog-v1.0.0-v1.2.0.sql" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

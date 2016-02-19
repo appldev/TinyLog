@@ -43,7 +43,7 @@ namespace TinyLog
 
         #endregion
 
-        #region static methods
+        #region static methods and properties
 
         /// <summary>
         /// Makes a copy of a log entry object
