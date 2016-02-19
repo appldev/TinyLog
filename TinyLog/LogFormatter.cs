@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TinyLog
 {
@@ -7,12 +8,34 @@ namespace TinyLog
     /// </summary>
     public abstract class LogFormatter
     {
-        public LogFormatter(Type typeFilter, bool filterOnChildTypes)
+        public LogFormatter(IEnumerable<Type> typeFilters, bool filterOnChildTypes)
         {
-            _TypeFilter = typeFilter;
+            _TypeFilters = new List<Type>(typeFilters);
             _FilterOnChildTypes = filterOnChildTypes;
         }
+        [Obsolete("This constructor will be removed. Use the other constructor for future compatibility")]
+        public LogFormatter(Type typeFilter, bool filterOnChildTypes)
+        {
+            _TypeFilters = new List<Type>() { typeFilter };
+            _FilterOnChildTypes = filterOnChildTypes;
+        }
+
+        private List<Type> _TypeFilters;
+        /// <summary>
+        /// Returns the Types of custom data that the formatter will handle
+        /// </summary>
+        public List<Type> TypeFilters
+        {
+            get
+            {
+                return _TypeFilters;
+            }
+        }
         private Type _TypeFilter;
+
+
+
+
         /// <summary>
         /// Returns the Type of custom data that the formatter will handle
         /// </summary>
@@ -40,6 +63,19 @@ namespace TinyLog
 
         private bool _FilterOnChildTypes = false;
 
+        protected bool MatchType(Type type, Type typeToMatch)
+        {
+            if (typeToMatch.IsInterface && type.GetInterface(typeToMatch.Name, true) != null)
+            {
+                return true;
+            }
+            else if (type == typeToMatch)
+            {
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Determines if this formatter is valid for a specific custom data object
         /// </summary>
@@ -47,27 +83,28 @@ namespace TinyLog
         /// <returns>true if this filter should be used to format the custom data info</returns>
         public virtual bool IsValidFormatterFor(object customData)
         {
-
             Type t = customData.GetType();
-            while (t != null)
+            if (!FilterOnChildTypes)
             {
-                if (_TypeFilter.IsInterface)
+                foreach (Type type in TypeFilters)
                 {
-                    if (t.GetInterface(_TypeFilter.Name, true) != null)
+                    if (MatchType(t, type))
                     {
                         return true;
                     }
-                    else
+                }
+            }
+            else
+            {
+                while (t != null)
+                {
+                    foreach (Type type in TypeFilters)
                     {
-                        t = t.BaseType;
+                        if (MatchType(t, type))
+                        {
+                            return true;
+                        }
                     }
-                }
-                else if (t == _TypeFilter)
-                {
-                    return true;
-                }
-                else
-                {
                     t = t.BaseType;
                 }
             }
@@ -82,11 +119,9 @@ namespace TinyLog
         public void Format(LogEntry logEntry, object customData)
         {
             // TODO: Determine if IsValidFormatterFor() should be called again by the formatter itself
-            //if (customData.GetType() != TypeFilter)
-            //{
-            //    throw new ArgumentException(string.Format("Custom data must be a type of '{0}'", TypeFilter.Name), "customData");
-            //}
             FormatLogEntry(logEntry, customData);
+            logEntry.CustomDataFormatter = GetType().FullName;
+            logEntry.CustomDataType = customData.GetType().FullName;
         }
 
         /// <summary>

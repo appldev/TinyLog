@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
@@ -7,7 +8,7 @@ namespace TinyLog.Formatters
 {
     public class XmlSerializationFormatter : LogFormatter
     {
-        public XmlSerializationFormatter() : base(typeof(ISerializable),true)
+        public XmlSerializationFormatter() : base(new Type[] { typeof(object) },filterOnChildTypes: true)
         {
             
         }
