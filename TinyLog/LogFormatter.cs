@@ -125,12 +125,70 @@ namespace TinyLog
         }
 
         /// <summary>
+        /// Tries to parse the custom data content using this logformatter
+        /// </summary>
+        /// <param name="logEntry">The Log Entry</param>
+        /// <param name="customData">the parsed custom data</param>
+        /// <returns>true if parsing/deserialization succeeded, otherwise false</returns>
+        public bool TryParseCustomData(LogEntry logEntry, out object customData)
+        {
+            if (string.IsNullOrEmpty(logEntry.CustomDataFormatter) || string.IsNullOrEmpty(logEntry.CustomData))
+            {
+                customData = null;
+                return false;
+            }
+            try
+            {
+                customData = ParseCustomData(logEntry);
+                if (customData == null)
+                {
+                    return false;
+                }
+                return true;
+
+            }
+            catch (Exception)
+            {
+                customData = null;
+                return false;
+            }    
+        }
+
+        /// <summary>
+        ///  Tries to parse the custom data content using this formatter
+        /// </summary>
+        /// <typeparam name="T">The object type to return</typeparam>
+        /// <param name="logEntry">The Log Entry</param>
+        /// <param name="customData">the parsed custom data into the object type T</param>
+        /// <returns>true if parsing/deserialization succeeded, otherwise false</returns>
+        public bool TryParseCustomData<T>(LogEntry logEntry, out T customData)
+        {
+            object o;
+            bool b = TryParseCustomData(logEntry, out o);
+            if (b)
+            {
+                customData = (T)o;
+            }
+            else
+            {
+                customData = default(T);
+            }
+            return b;
+        }
+
+        /// <summary>
         /// Performs the actual formatting of a log entry
         /// </summary>
         /// <param name="logEntry">The LogEntry to format</param>
         /// <param name="customData">The custom data object to use</param>
         protected abstract void FormatLogEntry(LogEntry logEntry, object customData);
 
+        /// <summary>
+        /// Performs the actual parsing/deserialization of custom data in a log entry
+        /// </summary>
+        /// <param name="logEntry">The Log entry</param>
+        /// <returns>the parsed/deserialized custom data. If the operation fails, the return type is null</returns>
+        protected abstract object ParseCustomData(LogEntry logEntry);
 
 
     }

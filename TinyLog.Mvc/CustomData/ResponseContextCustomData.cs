@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-namespace TinyLog.CustomData
+namespace TinyLog.CustomData.Mvc
 {
     /// <summary>
     /// Information from the HttpResponse

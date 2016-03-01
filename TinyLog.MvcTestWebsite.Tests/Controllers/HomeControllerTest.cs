@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyLog.MvcTestWebsite;
 using TinyLog.MvcTestWebsite.Controllers;
+using System.Threading.Tasks;
 
 namespace TinyLog.MvcTestWebsite.Tests.Controllers
 {
@@ -13,13 +14,13 @@ namespace TinyLog.MvcTestWebsite.Tests.Controllers
     public class HomeControllerTest
     {
         [TestMethod]
-        public void Index()
+        public async Task Index()
         {
             // Arrange
             HomeController controller = new HomeController();
 
             // Act
-            ViewResult result = controller.Index() as ViewResult;
+            ViewResult result = await controller.Index() as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);

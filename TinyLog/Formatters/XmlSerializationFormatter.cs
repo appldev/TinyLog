@@ -33,5 +33,21 @@ namespace TinyLog.Formatters
                 logEntry.CustomData = sb.ToString();
             }
         }
+
+        protected override object ParseCustomData(LogEntry logEntry)
+        {
+            Type t = Type.GetType(logEntry.CustomDataType, false);
+            if (t == null)
+            {
+                return null;
+            }
+
+            System.Xml.Serialization.XmlSerializer ser = new System.Xml.Serialization.XmlSerializer(t);
+            StringBuilder sb = new StringBuilder();
+            using (StringReader sr = new StringReader(logEntry.CustomData))
+            {
+                return ser.Deserialize(sr);
+            }
+        }
     }
 }

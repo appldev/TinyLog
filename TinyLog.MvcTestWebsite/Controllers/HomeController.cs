@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,11 +9,26 @@ namespace TinyLog.MvcTestWebsite.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        [OutputCache(Duration = 0)]
+        public async Task<ActionResult> Index()
         {
-            Session["USER"] = "MYUSER";
-            ViewData["MyItem"] = new { Name = "Michael", Age = 44 };
-            return View();
+            if (Session != null)
+            {
+                Session["USER"] = "MYUSER";
+                ViewData["MyItem"] = new { Name = "Michael", Age = 44 };
+            }
+            IEnumerable<LogEntry> model = await Log.Default.ReadLogEntriesAsync(new LogEntryFilter());
+            return View(model);
+        }
+
+        public async Task<ActionResult> LogEntry(Guid Id)
+        {
+            LogEntry model = await Log.Default.ReadLogEntryAsync(Id);
+            if (model == null)
+            {
+                throw new ApplicationException(string.Format("A log entry with the Id '{0}' was not found", Id));
+            }
+            return View(model);
         }
 
         private static Random r = new Random();

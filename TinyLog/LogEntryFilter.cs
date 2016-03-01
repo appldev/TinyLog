@@ -9,7 +9,7 @@ namespace TinyLog
     /// </summary>
     public class LogEntryFilter
     {
-        private LogEntryFilter()
+        public LogEntryFilter()
         {
 
         }
@@ -25,6 +25,11 @@ namespace TinyLog
             {
                 Predicate = predicate
             };
+        }
+
+        public static LogEntryFilter Create()
+        {
+            return new LogEntryFilter();
         }
 
         /// <summary>
@@ -46,12 +51,15 @@ namespace TinyLog
             };
         }
 
-        
+
         private string[] _SourcesFilter = null;
         private string[] _AreasFilter = null;
         LogEntrySeverity[] _SeveritiesFilter = null;
         private StringComparer _EqualityComparer = StringComparer.OrdinalIgnoreCase;
         private Func<LogEntry, bool> _predicate = null;
+
+        private DateTimeOffset? _fromDate = null;
+        private DateTimeOffset? _toDate = null;
 
 
 
@@ -121,7 +129,9 @@ namespace TinyLog
                 {
                     return x => (SourcesFilter == null || SourcesFilter.Contains(x.Source, EqualityComparer)) &&
                             (AreasFilter == null || AreasFilter.Contains(x.Area, EqualityComparer)) &&
-                            (SeveritiesFilter == null || SeveritiesFilter.Contains(x.Severity));
+                            (SeveritiesFilter == null || SeveritiesFilter.Contains(x.Severity)) &&
+                            (FromDate == null || x.CreatedOn >= FromDate.Value) &&
+                            (ToDate == null || x.CreatedOn <= ToDate.Value);
                 }
             }
             set
@@ -148,6 +158,70 @@ namespace TinyLog
                 _EqualityComparer = value;
             }
         }
+
+        /// <summary>
+        /// The from date
+        /// </summary>
+        public DateTimeOffset? FromDate
+        {
+            get
+            {
+                return _fromDate;
+            }
+
+            set
+            {
+                _fromDate = value;
+            }
+        }
+
+        public string FromDateString
+        {
+            get
+            {
+                if (FromDate.HasValue)
+                {
+                    return FromDate.Value.ToString("yyyy-MM-ddTHH:mm:ss.fffffffzzz");
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string ToDateString
+        {
+            get
+            {
+                if (ToDate.HasValue)
+                {
+                    return ToDate.Value.ToString("yyyy-MM-ddTHH:mm:ss.fffffffzzz");
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// The to date
+        /// </summary>
+        public DateTimeOffset? ToDate
+        {
+            get
+            {
+                return _toDate;
+            }
+
+            set
+            {
+                _toDate = value;
+            }
+        }
+
+
 
         /// <summary>
         /// Matches a filter against a LogEntry object

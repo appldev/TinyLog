@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using TinyLog.Formatters;
+using TinyLog.Readers;
 using TinyLog.Writers;
 
 namespace TinyLog.MvcTestWebsite
@@ -16,6 +17,7 @@ namespace TinyLog.MvcTestWebsite
             Log.Default.RegisterLogFormatter(new JsonSerializationFormatter());
             Log.Default.RegisterLogFormatter(new ActionFilterLogFormatter());
             Log.Default.RegisterLogFormatter(new ExceptionFormatter());
+            Log.Default.RegisterLogReader(new SqlLogReader(ConnectionString));
         }
     }
 }

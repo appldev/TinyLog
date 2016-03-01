@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.Web;
 
-namespace TinyLog.CustomData
+namespace TinyLog.CustomData.Mvc
 {
     /// <summary>
     /// Contains information from the HttpResponse

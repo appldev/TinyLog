@@ -39,13 +39,15 @@ namespace TinyLog
             _formatters = new ConcurrentBag<LogFormatter>();
             _writers = new ConcurrentBag<LogWriter>();
             _subscribers = new ConcurrentBag<LogSubscriber>();
+            _readers = new ConcurrentBag<LogReader>();
         }
 
-        private Log(IEnumerable<LogFormatter> logFormatters, IEnumerable<LogWriter> logWriters, IEnumerable<LogSubscriber> subscribers)
+        private Log(IEnumerable<LogWriter> logWriters, IEnumerable<LogFormatter> logFormatters, IEnumerable<LogSubscriber> subscribers, IEnumerable<LogReader> logReaders)
         {
             _formatters = new ConcurrentBag<LogFormatter>(logFormatters ?? new List<LogFormatter>());
             _writers = new ConcurrentBag<LogWriter>(logWriters);
             _subscribers = new ConcurrentBag<LogSubscriber>(subscribers ?? new List<LogSubscriber>());
+            _readers = new ConcurrentBag<LogReader>(logReaders ?? new List<LogReader>());
         }
 
         #endregion
@@ -157,9 +159,9 @@ namespace TinyLog
         /// </summary>
         /// <param name="logWriters">a list of writers to use</param>
         /// <param name="logFormatters">a list of formatters to use</param>
-        /// <param name="subscribers">a list of subscribers to use</param>
+        /// <param name="logSubscribers">a list of subscribers to use</param>
         /// <returns></returns>
-        public static Log Create(IEnumerable<LogWriter> logWriters, IEnumerable<LogFormatter> logFormatters = null, IEnumerable<LogSubscriber> subscribers = null)
+        public static Log Create(IEnumerable<LogWriter> logWriters, IEnumerable<LogFormatter> logFormatters = null, IEnumerable<LogSubscriber> logSubscribers = null, IEnumerable<LogReader> logReaders = null)
         {
             if (logWriters == null)
             {
@@ -177,22 +179,30 @@ namespace TinyLog
                     throw new InvalidOperationException("A log writer failed to initialize: {0}", ex);
                 }
             });
-            if (subscribers != null)
+            if (logSubscribers != null)
             {
-                if (subscribers != null)
+                logSubscribers.ToList().ForEach(subscriber =>
                 {
-                    subscribers.ToList().ForEach(subscriber =>
+                    Exception ex;
+                    if (!subscriber.TryInitialize(out ex))
                     {
-                        Exception ex;
-                        if (!subscriber.TryInitialize(out ex))
-                        {
-                            throw new InvalidOperationException("A log subscriber failed to initialize", ex);
-                        }
-                    });
-                }
+                        throw new InvalidOperationException("A log subscriber failed to initialize", ex);
+                    }
+                });
+            }
+            if (logReaders != null)
+            {
+                logReaders.ToList().ForEach(reader =>
+                {
+                    Exception ex;
+                    if (!reader.TryInitialize(out ex))
+                    {
+                        throw new InvalidOperationException("A log reader failed to initialize", ex);
+                    }
+                });
             }
 
-            return new Log(logFormatters, logWriters, subscribers);
+            return new Log(logWriters, logFormatters, logSubscribers,logReaders);
         }
 
         #endregion
@@ -202,6 +212,12 @@ namespace TinyLog
         private ConcurrentBag<LogFormatter> _formatters;
         private ConcurrentBag<LogWriter> _writers;
         private ConcurrentBag<LogSubscriber> _subscribers;
+        private ConcurrentBag<LogReader> _readers;
+
+
+
+        #region public methods to register writers, readers, formatters and subscribers
+
         /// <summary>
         /// Registers a log formatter for the log
         /// </summary>
@@ -228,12 +244,32 @@ namespace TinyLog
             Exception ex;
             if (!writer.TryInitialize(out ex))
             {
-                // TODO: Use an emergency log to log these errors as well?
                 throw new InvalidOperationException("The log writer failed to initialize", ex);
             }
             else
             {
                 _writers.Add(writer);
+            }
+        }
+
+        /// <summary>
+        /// Registers a new log reader for the log
+        /// </summary>
+        /// <param name="reader">The log reader to register</param>
+        public void RegisterLogReader(LogReader reader)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException("reader");
+            }
+            Exception ex;
+            if (!reader.TryInitialize(out ex))
+            {
+                throw new InvalidOperationException("The log reader failed to initialize", ex);
+            }
+            else
+            {
+                _readers.Add(reader);
             }
         }
 
@@ -255,7 +291,9 @@ namespace TinyLog
             _subscribers.Add(subscriber);
         }
 
+        #endregion
 
+        #region public methods to write to the log
 
 
         /// <summary>
@@ -266,7 +304,7 @@ namespace TinyLog
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
         public Task<bool> WriteLogEntryAsync(LogEntry logEntry, EmergencyLogSettings? emergencyLogSetting = null)
         {
-            return Task.FromResult<bool>(WriteLogEntry(logEntry,emergencyLogSetting ?? EmergencyLogSetting));
+            return Task.FromResult<bool>(WriteLogEntry(logEntry, emergencyLogSetting ?? EmergencyLogSetting));
         }
 
 
@@ -277,7 +315,7 @@ namespace TinyLog
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
         public bool WriteLogEntry(LogEntry logEntry)
         {
-            return WriteLogEntry(logEntry, EmergencyLogSetting,false);
+            return WriteLogEntry(logEntry, EmergencyLogSetting, false);
         }
 
         /// <summary>
@@ -287,7 +325,7 @@ namespace TinyLog
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
         public Task<bool> WriteLogEntryAsync(LogEntry logEntry)
         {
-            return Task.FromResult<bool>(WriteLogEntry(logEntry, EmergencyLogSetting,true));
+            return Task.FromResult<bool>(WriteLogEntry(logEntry, EmergencyLogSetting, true));
         }
 
         /// <summary>
@@ -323,7 +361,7 @@ namespace TinyLog
                 }
             }
             parallelExceptions = ActivateSubscribers(logEntry, errors == 0, parallel);
-            
+
             if (parallelExceptions.Count > 0)
             {
                 switch (emergencyLogSetting)
@@ -438,7 +476,7 @@ namespace TinyLog
         /// <returns></returns>
         public Task<bool> WriteLogEntryAsync(LogEntry logEntry, object customData, EmergencyLogSettings? emergencyLogSetting = null)
         {
-            return Task.FromResult<bool>(WriteLogEntry<object>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting,true));
+            return Task.FromResult<bool>(WriteLogEntry<object>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting, true));
         }
 
         /// <summary>
@@ -451,7 +489,7 @@ namespace TinyLog
         /// <returns>true if the LogEntry was comitted succesfully by all LogWriters</returns>
         public Task<bool> WriteLogEntryAsync<T>(LogEntry logEntry, T customData, EmergencyLogSettings? emergencyLogSetting = null)
         {
-            return Task.FromResult<bool>(WriteLogEntry<T>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting,true));
+            return Task.FromResult<bool>(WriteLogEntry<T>(logEntry, customData, emergencyLogSetting ?? EmergencyLogSetting, true));
         }
 
         /// <summary>
@@ -493,11 +531,126 @@ namespace TinyLog
                         break;
                 }
             }
-            
+
             return WriteLogEntry(logEntry, setting, parallel);
         }
 
+        #endregion
 
+        #region public methods to read from the log
+
+        /// <summary>
+        /// Reads entries from the log, by using one or more log readers.
+        /// </summary>
+        /// <param name="filter">The filter to use</param>
+        /// <param name="maxLogEntries">the max number of log entries to return per reader. Specify zero or a non-positive number to return all log entries available</param>
+        /// <returns>The list of log entries ordered by the creation date in descending order</returns>
+        public IEnumerable<LogEntry> ReadLogEntries(LogEntryFilter filter, int maxLogEntries = 100)
+        {
+            if (_readers.Count == 0)
+            {
+                throw new InvalidOperationException("There are no log readers registered for this log");
+            }
+            List<LogEntry> logEntries = new List<LogEntry>();
+            foreach (LogReader reader in _readers)
+            {
+                try
+                {
+                    logEntries.AddRange(reader.ReadByFilter(filter, maxLogEntries));
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(string.Format("The log reader '{0}' failed to read from the log. See the inner exception for details", reader.GetType().FullName), ex);
+                }
+            }
+            return logEntries.OrderByDescending(x => x.CreatedOn);
+        }
+
+        /// <summary>
+        /// Reads entries from the log, by using one or more log readers.
+        /// </summary>
+        /// <param name="filter">The filter to use</param>
+        /// <param name="maxLogEntries">the max number of log entries to return per reader. Specify zero or a non-positive number to return all log entries available</param>
+        /// <returns>The list of log entries ordered by the creation date in descending order</returns>
+        public async Task<IEnumerable<LogEntry>> ReadLogEntriesAsync(LogEntryFilter filter, int maxLogEntries = 100)
+        {
+            if (_readers.Count == 0)
+            {
+                throw new InvalidOperationException("There are no log readers registered for this log");
+            }
+            List<LogEntry> logEntries = new List<LogEntry>();
+            foreach (LogReader reader in _readers)
+            {
+                try
+                {
+                    logEntries.AddRange(await reader.ReadByFilterAsync(filter, maxLogEntries));
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(string.Format("The log reader '{0}' failed to read from the log. See the inner exception for details", reader.GetType().FullName), ex);
+                }
+            }
+            return logEntries;
+        }
+
+        /// <summary>
+        /// Reads one log entry
+        /// </summary>
+        /// <param name="Id">The unique id of the entry</param>
+        /// <returns>The log entry or null if no entry was found</returns>
+        public LogEntry ReadLogEntry(Guid Id)
+        {
+            if (_readers.Count == 0)
+            {
+                throw new InvalidOperationException("There are no log readers registered for this log");
+            }
+            List<LogEntry> logEntries = new List<LogEntry>();
+            foreach (LogReader reader in _readers)
+            {
+                try
+                {
+                    LogEntry logEntry = reader.ReadById(Id);
+                    if (logEntry != null)
+                    {
+                        logEntries.Add(logEntry);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(string.Format("The log reader '{0}' failed to read from the log. See the inner exception for details", reader.GetType().FullName), ex);
+                }
+            }
+            return logEntries.FirstOrDefault();
+        }
+
+        public async Task<LogEntry> ReadLogEntryAsync(Guid Id)
+        {
+            if (_readers.Count == 0)
+            {
+                throw new InvalidOperationException("There are no log readers registered for this log");
+            }
+            List<LogEntry> logEntries = new List<LogEntry>();
+            foreach (LogReader reader in _readers)
+            {
+                try
+                {
+                    LogEntry logEntry = await reader.ReadByIdAsync(Id);
+                    if (logEntry != null)
+                    {
+                        logEntries.Add(logEntry);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(string.Format("The log reader '{0}' failed to read from the log. See the inner exception for details", reader.GetType().FullName), ex);
+                }
+            }
+            return logEntries.FirstOrDefault();
+        }
+
+
+
+        #endregion
 
 
 

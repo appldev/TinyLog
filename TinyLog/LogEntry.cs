@@ -43,7 +43,7 @@ namespace TinyLog
 
         #endregion
 
-        #region static methods
+        #region static methods and properties
 
         /// <summary>
         /// Makes a copy of a log entry object
@@ -149,12 +149,10 @@ namespace TinyLog
         /// <summary>
         /// Log entry title
         /// </summary>
-        [System.Xml.Serialization.XmlText]
         public string Title { get; set; }
         /// <summary>
         /// Log entry message
         /// </summary>
-       [System.Xml.Serialization.XmlText]
         public string Message { get; set; }
         /// <summary>
         /// The source of the log entry

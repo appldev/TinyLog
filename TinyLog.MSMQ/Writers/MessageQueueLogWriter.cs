@@ -101,7 +101,6 @@ namespace TinyLog.Writers
             Exception writeException;
             bool b = TryWriteLogEntry(logEntry, out writeException);
             return Task.FromResult<Tuple<bool, Exception>>(new Tuple<bool, Exception>(b, writeException));
-
         }
 
         

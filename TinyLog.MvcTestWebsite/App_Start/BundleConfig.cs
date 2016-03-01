@@ -21,11 +21,16 @@ namespace TinyLog.MvcTestWebsite
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/DataTables-1.10.11/media/js/jquery.dataTables.min.js",
+                      "~/Scripts/DataTables-1.10.11/media/js/jquery.bootstrap.min.js"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/DataTables-1.10.11/media/css/jquery.dataTables.min.css",
+                      "~/Content/DataTables-1.10.11/media/css/dataTables.bootstrap.min.css"));
         }
     }
 }
