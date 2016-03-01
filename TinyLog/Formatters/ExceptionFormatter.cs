@@ -123,5 +123,14 @@ namespace TinyLog.Formatters
                 exInner = exInner.InnerException;
             }
         }
+
+        protected override object ParseCustomData(LogEntry logEntry)
+        {
+            if (logEntry.CustomDataType != null && logEntry.CustomDataType.Equals(this.GetType().FullName, StringComparison.OrdinalIgnoreCase))
+            {
+                return logEntry.CustomData;
+            }
+            return null;
+        }
     }
 }

@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Readers\SqlLogReader.cs" />
     <Compile Include="Writers\SqlLogWriter.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,7 +67,8 @@
     <Content Include="Database\TinyLogDb_log.ldf">
       <DependentUpon>TinyLogDb.mdf</DependentUpon>
     </Content>
-    <Content Include="Database\update-table-tinylog-v1.0.0-v1.2.0.sql" />
+    <Content Include="Database\update-table-tinylog-v1.0.0-v1.1.0.sql" />
+    <Content Include="Database\update-table-tinylog-v1.1.0-v1.2.0.sql" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

@@ -74,6 +74,8 @@ namespace TinyLog.Writers
             sb.AppendFormat("Client: {0}\r\n", logEntry.Client);
             sb.AppendFormat("Client info: {0}\r\n\r\n", logEntry.ClientInfo);
             sb.AppendFormat("Message:\r\n{0}\r\n\r\n", logEntry.Message);
+            sb.AppendFormat("DataFormatter:\r\n{0}\r\n", logEntry.CustomDataFormatter);
+            sb.AppendFormat("Datatype:\r\n{0}\r\n", logEntry.CustomDataType);
             sb.AppendFormat("Data:\r\n{0}\r\n", logEntry.CustomData);
             return sb.ToString();
         }

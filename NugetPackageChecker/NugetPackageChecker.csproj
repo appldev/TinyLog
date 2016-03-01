@@ -44,20 +44,20 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="TinyLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TinyLog-Full.1.0.1\lib\net45\TinyLog.dll</HintPath>
+    <Reference Include="TinyLog, Version=1.1.5893.30663, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Full.1.2.0-beta1\lib\net45\TinyLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="TinyLog.Json, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TinyLog-Full.1.0.1\lib\net45\TinyLog.Json.dll</HintPath>
+    <Reference Include="TinyLog.Json, Version=1.1.5893.30664, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Full.1.2.0-beta1\lib\net45\TinyLog.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="TinyLog.MSMQ, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TinyLog-Full.1.0.1\lib\net45\TinyLog.MSMQ.dll</HintPath>
+    <Reference Include="TinyLog.MSMQ, Version=1.1.5893.30664, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Full.1.2.0-beta1\lib\net45\TinyLog.MSMQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="TinyLog.Sql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TinyLog-Full.1.0.1\lib\net45\TinyLog.Sql.dll</HintPath>
+      <HintPath>..\packages\TinyLog-Full.1.2.0-beta1\lib\net45\TinyLog.Sql.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

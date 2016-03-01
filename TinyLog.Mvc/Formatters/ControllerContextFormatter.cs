@@ -17,6 +17,9 @@ namespace TinyLog.Formatters
 
         private Formatting indent = Formatting.Indented;
 
+        /// <summary>
+        /// Contains the default json serialization settings
+        /// </summary>
         private readonly static JsonSerializerSettings _SerializationSettings = new JsonSerializerSettings()
         {
             PreserveReferencesHandling = PreserveReferencesHandling.None,
@@ -45,8 +48,15 @@ namespace TinyLog.Formatters
             }
         }
 
+        protected override object ParseCustomData(LogEntry logEntry)
+        {
+            Type t = Type.GetType(logEntry.CustomDataType, false);
+            if (t == null)
+            {
+                return null;
+            }
+            return JsonConvert.DeserializeObject(logEntry.CustomData, t, _SerializationSettings);
 
-
-
+        }
     }
 }

@@ -3,6 +3,10 @@ using System.Threading.Tasks;
 
 namespace TinyLog
 {
+    /// <summary>
+    /// A base class for all Log Subscribers. A Log subscriber receives filtered log entries for post-processing.
+    /// For example, a log subscriber could email all critical log entries to a group of people.
+    /// </summary>
     public abstract class LogSubscriber
     {
         public LogSubscriber(LogEntryFilter filter)

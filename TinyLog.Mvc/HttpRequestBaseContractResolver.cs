@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Web;
 using System.Reflection;
@@ -68,6 +66,9 @@ namespace TinyLog.Mvc
         }
     }
 
+    /// <summary>
+    /// A Json contract resolver which ensures, that streams and assemblies aren't serialized
+    /// </summary>
     public class HttpRequestBaseContractResolver : DefaultContractResolver
     {
         public HttpRequestBaseContractResolver()

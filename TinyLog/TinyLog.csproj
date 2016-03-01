@@ -83,6 +83,7 @@
     <Compile Include="LogEntryFilter.cs" />
     <Compile Include="LogFormatter.cs" />
     <Compile Include="Log.cs" />
+    <Compile Include="LogReader.cs" />
     <Compile Include="LogSubscriber.cs" />
     <Compile Include="LogWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
