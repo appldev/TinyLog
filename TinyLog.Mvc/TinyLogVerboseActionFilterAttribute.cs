@@ -20,8 +20,24 @@ namespace TinyLog.Mvc
         {
             VerboseLogEvents = verboseLogEvents;
             log = verboseLog ?? TinyLog.Log.Default;
-            
         }
+
+        /// <summary>
+        /// Initializes the attribute with All events and the default log
+        /// </summary>
+        public TinyLogVerboseActionFilterAttribute()
+        {
+            VerboseLogEvents = VerboseLogEvent.All;
+            log = TinyLog.Log.Default;
+        }
+
+        public TinyLogVerboseActionFilterAttribute(VerboseLogEvent verboseLogEvents = VerboseLogEvent.All)
+        {
+            VerboseLogEvents = verboseLogEvents;
+            log = TinyLog.Log.Default;
+        }
+
+
 
         [Flags]
         public enum VerboseLogEvent
@@ -32,7 +48,7 @@ namespace TinyLog.Mvc
             OnResultExecuted,
             All = OnActionExecuting | OnActionExecuted | OnResultExecuting | OnResultExecuted
         }
-        public VerboseLogEvent VerboseLogEvents {get; set;} = VerboseLogEvent.All;
+        public VerboseLogEvent VerboseLogEvents { get; set; } = VerboseLogEvent.All;
 
 
         private Log log = null;
@@ -41,7 +57,7 @@ namespace TinyLog.Mvc
             object area = context.RouteData.Values["area"] ?? "";
             object controller = context.RouteData.Values["controller"] ?? context.Controller.GetType().Name;
             object action = context.RouteData.Values["action"] ?? "";
-            LogEntry entry = LogEntry.Verbose(LogEntrySourceDefaults.MVCController, string.Format("{0}/{1}/{2}",area,controller,action), title);
+            LogEntry entry = LogEntry.Verbose(LogEntrySourceDefaults.MVCController, string.Format("{0}/{1}/{2}", area, controller, action), title);
             entry.CorrelationId = (Guid?)context.HttpContext.Items["ActionFilterAttributeCorrelationId"];
             if (!entry.CorrelationId.HasValue)
             {
@@ -74,7 +90,7 @@ namespace TinyLog.Mvc
                 log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnActionExecuted"), ActionFilterCustomData.FromActionExecuted(filterContext));
             }
         }
-        
+
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
             if (filterContext.Controller.GetType() == typeof(TinyLog.Mvc.Controllers.TinyLogErrorController))
