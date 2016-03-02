@@ -13,12 +13,13 @@
     <summary>This is the MVC logging package for TinyLog. With this package you get full logging capabilities in your ASP.NET MVC Web applications. TinyLog-Mvc supports manual and attribute based verbose logging. It will log on MVC-Level, ASP.NET Level and IIS Level. The package includes the TinyLog-Full as well.</summary>
     <releaseNotes>
       Visit the project on GitHub for Getting Started and usage examples. The source code includes a full demo MVC Website with logging.
+      You can also visit Visit https://tinylog.azurewebsites.net for a live logging example
     </releaseNotes>
     <language>en-US</language>
     <tags>Logging .NET C#</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="8.0.2" />
-      <dependency id="TinyLog-Full" version="1.2.0-beta1" />
+      <dependency id="TinyLog-Full" version="1.2.0" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
     </dependencies>
     <frameworkAssemblies>

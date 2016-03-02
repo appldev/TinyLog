@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>TinyLog-Core</id>
-    <version>1.2.0-beta1</version>
+    <version>1.2.0</version>
     <title>TinyLog-Core</title>
     <authors>Michael Randrup</authors>
     <owners>michaelrandrup</owners>
@@ -12,7 +12,8 @@
     <description>TinyLog is a light-weight, simple and yet very comprehensive and powefull Logging Provider for .NET Applications.</description>
     <summary> This is the Core package with basic Log formatters, Log Writers and Log Subscribers. You can download the extension packages to get specific support for Logging to SQL Server, Message Queues (MSMQ) and ASP.NET MVC</summary>
     <releaseNotes>
-      Visit the project on GitHub for Getting Started and usage examples
+      Visit the project on GitHub for Getting Started and usage examples.
+      Visit https://tinylog.azurewebsites.net for a live logging example
     </releaseNotes>
     <language>en-US</language>
     <tags>Logging .NET C#</tags>

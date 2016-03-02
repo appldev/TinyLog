@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>TinyLog-Full</id>
-    <version>1.2.0-beta1</version>
+    <version>1.2.0</version>
     <title>TinyLog-Full</title>
     <authors>Michael Randrup</authors>
     <owners>michaelrandrup</owners>
@@ -13,6 +13,7 @@
     <summary>This is the Full package that includes the TinyLog.Json, TinyLog.MSMQ and TinyLog.Sql assemblies. These extra assemblies extends the core functionality with specific Log formatters, Log Writers and Log Subscribers. You can download the core packages to get core logging support and building your own log formatters, log writers and log subscribers.</summary>
     <releaseNotes>
       Visit the project on GitHub for Getting Started and usage examples
+      Visit https://tinylog.azurewebsites.net for a live logging example
     </releaseNotes>
     <language>en-US</language>
     <tags>Logging .NET C#</tags>
