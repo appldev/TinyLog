@@ -22,18 +22,21 @@ namespace TinyLog.Formatters
             TypeNameHandling = TypeNameHandling.Objects
         };
 
-        //public override bool IsValidFormatterFor(object customData)
-        //{
-        //    if (customData is ISerializable || customData is IList || customData is ICollection)
-        //    {
-        //        return true;
-        //    }
-        //    return base.IsValidFormatterFor(customData);
-        //}
 
         protected override void FormatLogEntry(LogEntry logEntry, object customData)
         {
             logEntry.CustomData = JsonConvert.SerializeObject(customData, indent, settings);
+        }
+
+        protected override object ParseCustomData(LogEntry logEntry)
+        {
+            Type t = Type.GetType(logEntry.CustomDataType, false);
+            if (t == null)
+            {
+                return null;
+            }
+            return JsonConvert.DeserializeObject(logEntry.CustomData, t, settings);
+            
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace TinyLog.CustomData
+namespace TinyLog.CustomData.Mvc
 {
 
 

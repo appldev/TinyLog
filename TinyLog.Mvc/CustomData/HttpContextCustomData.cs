@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 
-namespace TinyLog.CustomData
+namespace TinyLog.CustomData.Mvc
 {
     /// <summary>
     /// Information from the HttpContext

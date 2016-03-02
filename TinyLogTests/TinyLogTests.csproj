@@ -70,6 +70,7 @@
     <Compile Include="DebuggerLogWriterTests.cs" />
     <Compile Include="ConsoleLogWriterTests.cs" />
     <Compile Include="BaseClasses\SqlLogBaseClass.cs" />
+    <Compile Include="SqlLogReaderTests.cs" />
     <Compile Include="SqlLogWriterTests.cs" />
     <Compile Include="AllWritersTests.cs" />
     <Compile Include="SqlLazyLogWriterTests.cs" />

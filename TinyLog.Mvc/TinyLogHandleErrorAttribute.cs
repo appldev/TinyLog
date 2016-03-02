@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using TinyLog.CustomData;
+using TinyLog.CustomData.Mvc;
 
 namespace TinyLog.Mvc
 {

@@ -35,18 +35,18 @@ namespace TinyLogTests
 
         [TestMethod]
         [TestCategory("High Volume")]
-        public async Task Write50000Exceptions_SqlLazyLogWriterTests()
+        public async Task Write2000Exceptions_SqlLazyLogWriterTests()
         {
             DateTime dt = DateTime.Now;
             int num = 0;
-            for (int i = 0; i < 50000; i++)
+            for (int i = 0; i < 2000; i++)
             {
                 bool b = await LogHelpers.WriteException(log, new Exception("Exception #" + i.ToString()));
                 num += b ? 1 : 0;
             }
             Console.WriteLine("{0} exceptions written in {1}ms", num, (DateTime.Now - dt).TotalMilliseconds);
             Console.WriteLine("{0} exceptions written to {1}", num, DbPath);
-            Assert.IsTrue(num == 50000);
+            Assert.IsTrue(num == 2000);
         }
     }
 }

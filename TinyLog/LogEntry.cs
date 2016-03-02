@@ -43,7 +43,7 @@ namespace TinyLog
 
         #endregion
 
-        #region static methods
+        #region static methods and properties
 
         /// <summary>
         /// Makes a copy of a log entry object
@@ -117,7 +117,7 @@ namespace TinyLog
 
         public object Clone()
         {
-            throw new NotImplementedException();
+            return LogEntry.Copy(this);
         }
 
         #endregion
@@ -153,7 +153,6 @@ namespace TinyLog
         /// <summary>
         /// Log entry message
         /// </summary>
-       [System.Xml.Serialization.XmlText]
         public string Message { get; set; }
         /// <summary>
         /// The source of the log entry
@@ -190,6 +189,7 @@ namespace TinyLog
         /// <summary>
         /// Custom log data
         /// </summary>
+        [System.Xml.Serialization.XmlText]
         public string CustomData { get; set; }
         /// <summary>
         /// The formatter used for providing custom data for the log entry, if any.
@@ -200,5 +200,13 @@ namespace TinyLog
         /// Contains the type of data contained in the CustomData property.
         /// </summary>
         public string CustomDataType { get; set; }
+        /// <summary>
+        /// Contains the signature for the log entry. The signature is used to validate that the log entry has not been tampered with
+        /// </summary>
+        public string Signature { get; set; }
+        /// <summary>
+        /// Contains the name of the method used to create the signature for the log entry
+        /// </summary>
+        public string SignatureMethod { get; set; }
     }
 }

@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyLog.MvcTestWebsite", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyLog.MvcTestWebsite.Tests", "TinyLog.MvcTestWebsite.Tests\TinyLog.MvcTestWebsite.Tests.csproj", "{57B446AF-6566-4A24-9F28-69BE822D6BD0}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TinyLog.Mvc.Database", "TinyLog.Mvc.Database\TinyLog.Mvc.Database.sqlproj", "{0AA564E9-669E-40D7-A441-FD9FCD80313B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,12 @@ Global
 		{57B446AF-6566-4A24-9F28-69BE822D6BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57B446AF-6566-4A24-9F28-69BE822D6BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57B446AF-6566-4A24-9F28-69BE822D6BD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA564E9-669E-40D7-A441-FD9FCD80313B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA564E9-669E-40D7-A441-FD9FCD80313B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA564E9-669E-40D7-A441-FD9FCD80313B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0AA564E9-669E-40D7-A441-FD9FCD80313B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA564E9-669E-40D7-A441-FD9FCD80313B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA564E9-669E-40D7-A441-FD9FCD80313B}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
