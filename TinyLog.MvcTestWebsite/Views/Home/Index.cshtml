@@ -1,17 +1,23 @@
 ﻿@model IEnumerable<TinyLog.LogEntry>
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "TinyLog Home Page";
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>TinyLog demo website</h1>
+    <p class="lead">TinyLog is a light-weight, simple and yet very comprehensive and powerful Logging Provider for .NET Applications.</p>
+    <p><a href="https://github.com/michaelrandrup/TinyLog" target="_blank" class="btn btn-primary btn-lg">View on GitHub &raquo;</a></p>
 </div>
 
 <div class="row">
     <div class="col-lg-12">
-        <h2>Below is the log for this website. The log will expand as you click around</h2>
+        <div class="alert alert-success">
+            <strong>Below is the log for this website</strong>. The log will expand as you click around.<br />
+            The log is based on the <strong>SqlLogWriter</strong> wrapped in the <strong>LazyLogWriter</strong>, so logs are written to the backend storage after a 15-second delay<br />
+            If you click on the <strong>About</strong> link, an application exception will be generated, so you can see an example, of a custom error page<br />
+            You can also type in an url that doesn't exist and see how it is captured and presented by a custom error page. For example: <a class="alert-link" href="http://tinylog.azurewebsites.net/does/not/exist">http://tinylog.azurewebsites.net/does/not/exist</a> and <a class="alert-link" href="http://tinylog.azurewebsites.net/images/non-existing.pdf">http://tinylog.azurewebsites.net/images/non-existing.pdf</a>
+        </div>
+        
     </div>
     <div class="col-lg-12">
         <table id="tinylog" class="table">
