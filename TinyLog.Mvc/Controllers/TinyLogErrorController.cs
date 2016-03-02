@@ -66,6 +66,10 @@ namespace TinyLog.Mvc.Controllers
             {
                 model = new TinyLogHandleErrorInfo();
             }
+            else
+            {
+                Session.Remove("LASTERROR");
+            }
             return View(GetErrorViewPath(Id),model);
         }
 
