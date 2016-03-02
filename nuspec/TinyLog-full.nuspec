@@ -9,7 +9,7 @@
     <licenseUrl>http://github.com/appldev/TinyLog/blob/master/LICENSE.MD</licenseUrl>
     <projectUrl>http://appldev.github.io/TinyLog</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>TinyLog is a light-weight, simple and yet very comprehensive and powefull Logging Provider for .NET Applications.</description>
+    <description>TinyLog is a light-weight, simple and yet very comprehensive and powerful Logging Provider for .NET Applications.</description>
     <summary>This is the Full package that includes the TinyLog.Json, TinyLog.MSMQ and TinyLog.Sql assemblies. These extra assemblies extends the core functionality with specific Log formatters, Log Writers and Log Subscribers. You can download the core packages to get core logging support and building your own log formatters, log writers and log subscribers.</summary>
     <releaseNotes>
       Visit the project on GitHub for Getting Started and usage examples

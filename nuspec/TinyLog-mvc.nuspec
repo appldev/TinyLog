@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>TinyLog-Mvc</id>
-    <version>1.2.0-beta2</version>
+    <version>1.2.0</version>
     <title>TinyLog-Mvc</title>
     <authors>Michael Randrup</authors>
     <owners>michaelrandrup</owners>
     <licenseUrl>http://github.com/appldev/TinyLog/blob/master/LICENSE.MD</licenseUrl>
     <projectUrl>http://appldev.github.io/TinyLog</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>TinyLog is a light-weight, simple and yet very comprehensive and powefull Logging Provider for .NET Applications.</description>
+    <description>TinyLog is a light-weight, simple and yet very comprehensive and powerful Logging Provider for .NET Applications.</description>
     <summary>This is the MVC logging package for TinyLog. With this package you get full logging capabilities in your ASP.NET MVC Web applications. TinyLog-Mvc supports manual and attribute based verbose logging. It will log on MVC-Level, ASP.NET Level and IIS Level. The package includes the TinyLog-Full as well.</summary>
     <releaseNotes>
       Visit the project on GitHub for Getting Started and usage examples. The source code includes a full demo MVC Website with logging.
