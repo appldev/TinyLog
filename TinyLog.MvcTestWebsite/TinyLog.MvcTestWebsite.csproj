@@ -34,6 +34,17 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="DefaultConnection-Deployment" Order="1" xmlns="">
+          <Destination Path="" />
+          <Object Type="DbFullSql">
+            <PreSource Path="Data Source=%28LocalDb%29\MSSQLLocalDB%3bAttachDbFilename=|DataDirectory|\aspnet-TinyLog.MvcTestWebsite-20160216111809.mdf%3bInitial Catalog=aspnet-TinyLog.MvcTestWebsite-20160216111809%3bIntegrated Security=True" ScriptSchema="True" ScriptData="True" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Debug\AutoScripts\DefaultConnection-Deployment_SchemaAndData.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -359,6 +370,8 @@
     <Content Include="Content\DataTables-1.10.11\media\images\Sorting icons.psd" />
     <Content Include="Content\DataTables-1.10.11\extensions\Buttons\css\mixins.scss" />
     <Content Include="Content\DataTables-1.10.11\extensions\Buttons\css\common.scss" />
+    <None Include="Properties\PublishProfiles\tinylog - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\tinylog - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.11.3.intellisense.js" />
     <Content Include="Scripts\DataTables-1.10.11\media\js\dataTables.bootstrap.js" />
     <Content Include="Scripts\DataTables-1.10.11\media\js\dataTables.bootstrap.min.js" />
@@ -389,7 +402,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
