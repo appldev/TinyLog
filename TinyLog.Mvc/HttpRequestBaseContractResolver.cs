@@ -25,7 +25,14 @@ namespace TinyLog.Mvc
             foreach (var key in collection.AllKeys)
             {
                 writer.WritePropertyName(key);
-                writer.WriteValue(collection.Get(key));
+                try
+                {
+                    writer.WriteValue(collection.Get(key));
+                }
+                catch (Exception exWrite)
+                {
+                    writer.WriteValue(string.Format("Error writing the value: {0}", exWrite.Message));
+                }
             }
             writer.WriteEndObject();
         }

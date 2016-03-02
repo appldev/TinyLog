@@ -33,13 +33,13 @@ namespace TinyLog.Mvc
                         Defaults = new RouteValueDictionary()
                         {
                             {"controller", "TinyLogError"},
-                        {"action", "Index"},
-                        {"id", UrlParameter.Optional}
-                        },
-                        DataTokens = new RouteValueDictionary()
-                        {
-                            {"namespaces", new string[] { "TinyLog.Mvc.Controllers" } }
-                        }
+                            {"action", "Index"},
+                            {"id", UrlParameter.Optional}
+                            },
+                            DataTokens = new RouteValueDictionary()
+                            {
+                                {"namespaces", new string[] { "TinyLog.Mvc.Controllers" } }
+                            }
                     };
                 }
                 return _TinyLogErrorRoute;
@@ -75,7 +75,7 @@ namespace TinyLog.Mvc
             {
                 filters.Add(new TinyLogVerboseActionFilterAttribute());
             }
-            
+
         }
 
         #endregion
@@ -107,13 +107,13 @@ namespace TinyLog.Mvc
                     };
                     HttpContext.Current.Session["LASTERROR"] = model;
                 }
-                
-                
+
+
                 HttpContext.Current.Server.TransferRequest("~/error/index/" + HttpContext.Current.Response.StatusCode.ToString(), true);
             }
         }
         #endregion
 
-        
+
     }
 }
