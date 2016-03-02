@@ -1,6 +1,8 @@
 #Getting Started
 TinyLog is a light-weight, simple and yet very comprehensive and powerful Logging Provider for .NET Applications.
 
+You can [view a live logging demo at http://tinylog.azurewebsites.net](http://tinylog.azurewebsites.net). This demo is based on the MVC Website from the source code.
+
 ##Included backend storage (Log Writers)
 Although you can write your own Log Writers with less than 50 lines of code, TinyLog includes Log Writers for the following backend storages:
 - **File based** logs (one file or day-by-day rollover)
