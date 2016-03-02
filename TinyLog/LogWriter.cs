@@ -45,7 +45,7 @@ namespace TinyLog
                 return _filter;
             }
 
-            protected set
+            set
             {
                 _filter = value;
             }

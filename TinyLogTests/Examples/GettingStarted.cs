@@ -9,6 +9,61 @@ using TinyLog.Formatters;
 
 namespace TinyLogTests.Documentation
 {
+    class WikiExamples
+    {
+        public void LogExample()
+        {
+            // Configure the default log for SQL Server storage and json formatting
+            TinyLog.Log.Default.RegisterLogWriter(new SqlLogWriter("MyConnectionString", "MyLogTable"));
+            TinyLog.Log.Default.RegisterLogFormatter(new JsonSerializationFormatter());
+
+            // Create a new log with SQL Server storage and Xml formatting
+            TinyLog.Log MyLog = TinyLog.Log.Create(
+                logWriters: new LogWriter[] { new SqlLogWriter("MyConnectionString", "MyLogTable") },
+                logFormatters: new LogFormatter[] {new XmlSerializationFormatter()});
+
+
+            // Configure two LogWriters. One for critical and error events and one for all other events
+            TinyLog.Log.Default.RegisterLogWriter(new SqlLogWriter("MyConnectionString", "MyCriticalLogTable")
+            {
+                 Filter = LogEntryFilter.Create(severities: new LogEntrySeverity[] {  LogEntrySeverity.Critical, LogEntrySeverity.Error})
+            });
+
+            TinyLog.Log.Default.RegisterLogWriter(new SqlLogWriter("MyConnectionString", "MyDefaultLogTable")
+            {
+                Filter = LogEntryFilter.Create(severities: new LogEntrySeverity[] { LogEntrySeverity.Information, LogEntrySeverity.Warning, LogEntrySeverity.Verbose })
+            });
+
+
+            // Create a simple entry with the 'Information' severity
+            TinyLog.Log.Default.WriteLogEntry(LogEntry.Create("My Title", "My Message"));
+
+            // Create a more detailed log entry
+            TinyLog.Log.Default.WriteLogEntry(LogEntry.Create("My Title", "My message", "A source", "An area", LogEntrySeverity.Warning));
+
+            // Create a warning log entry for a failed login with custom data
+            var UserFailedLogin = new
+            {
+                UserName = "johndoe@example.com",
+                LoginTime = DateTime.Now
+            };
+            TinyLog.Log.Default.WriteLogEntry<object>(LogEntry.Warning("Login failed", "The password was expired", "Login", "/Home/Login"), UserFailedLogin);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+    }
     class GettingStarted
     {
         public void BasicSetup()
