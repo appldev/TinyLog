@@ -67,10 +67,15 @@ namespace TinyLog.Mvc
             return entry;
         }
 
+        private static bool IsBot(System.Web.HttpContextBase context)
+        {
+            return context.Request.UserAgent.ToLower().Contains("bot");
+        }
+
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!LogCrawlers && filterContext.HttpContext.Request.Browser.Crawler)
+            if (!LogCrawlers && (filterContext.HttpContext.Request.Browser.Crawler || IsBot(filterContext.HttpContext)))
             {
                 return;
             }
@@ -87,7 +92,7 @@ namespace TinyLog.Mvc
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
 
-            if (!LogCrawlers && filterContext.HttpContext.Request.Browser.Crawler)
+            if (!LogCrawlers && (filterContext.HttpContext.Request.Browser.Crawler || IsBot(filterContext.HttpContext)))
             {
                 return;
             }
@@ -103,7 +108,7 @@ namespace TinyLog.Mvc
 
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
-            if (!LogCrawlers && filterContext.HttpContext.Request.Browser.Crawler)
+            if (!LogCrawlers && (filterContext.HttpContext.Request.Browser.Crawler || IsBot(filterContext.HttpContext)))
             {
                 return;
             }
@@ -119,7 +124,7 @@ namespace TinyLog.Mvc
 
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            if (!LogCrawlers && filterContext.HttpContext.Request.Browser.Crawler)
+            if (!LogCrawlers && (filterContext.HttpContext.Request.Browser.Crawler || IsBot(filterContext.HttpContext)))
             {
                 return;
             }
