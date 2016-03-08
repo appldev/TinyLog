@@ -37,7 +37,7 @@ namespace TinyLog.Mvc
             log = TinyLog.Log.Default;
         }
 
-
+        public bool LogCrawlers { get; set; } = false;
 
         [Flags]
         public enum VerboseLogEvent
@@ -52,7 +52,7 @@ namespace TinyLog.Mvc
 
 
         private Log log = null;
-        private LogEntry FromContext(ControllerContext context, string title)
+        private static LogEntry FromContext(ControllerContext context, string title)
         {
             object area = context.RouteData.Values["area"] ?? "";
             object controller = context.RouteData.Values["controller"] ?? context.Controller.GetType().Name;
@@ -67,8 +67,13 @@ namespace TinyLog.Mvc
             return entry;
         }
 
+
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            if (!LogCrawlers && filterContext.HttpContext.Request.Browser.Crawler)
+            {
+                return;
+            }
             if (filterContext.Controller.GetType() == typeof(TinyLog.Mvc.Controllers.TinyLogErrorController))
             {
                 return;
@@ -81,6 +86,11 @@ namespace TinyLog.Mvc
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
+
+            if (!LogCrawlers && filterContext.HttpContext.Request.Browser.Crawler)
+            {
+                return;
+            }
             if (filterContext.Controller.GetType() == typeof(TinyLog.Mvc.Controllers.TinyLogErrorController))
             {
                 return;
@@ -93,6 +103,10 @@ namespace TinyLog.Mvc
 
         public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
+            if (!LogCrawlers && filterContext.HttpContext.Request.Browser.Crawler)
+            {
+                return;
+            }
             if (filterContext.Controller.GetType() == typeof(TinyLog.Mvc.Controllers.TinyLogErrorController))
             {
                 return;
@@ -105,6 +119,10 @@ namespace TinyLog.Mvc
 
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
+            if (!LogCrawlers && filterContext.HttpContext.Request.Browser.Crawler)
+            {
+                return;
+            }
             if (filterContext.Controller.GetType() == typeof(TinyLog.Mvc.Controllers.TinyLogErrorController))
             {
                 return;
