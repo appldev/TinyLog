@@ -60,7 +60,7 @@ namespace TinyLog.Mvc
             filterContext.Result = vr;
 
             bool handled = true;
-            if (!LogCrawlers && !IsBot(filterContext.HttpContext))
+            if (LogCrawlers || (!LogCrawlers && !filterContext.HttpContext.Request.Browser.Crawler && !IsBot(filterContext.HttpContext)))
             {
                 handled = TinyLog.Log.Default.WriteLogEntry<ActionFilterCustomData>(entry, ActionFilterCustomData.FromExceptionContext(filterContext));
             }
