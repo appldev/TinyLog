@@ -28,15 +28,23 @@ namespace TinyLog.Mvc
             }
         }
 
+        private static bool IsBot(System.Web.HttpContextBase context)
+        {
+            return context.Request.UserAgent.ToLower().Contains("bot");
+        }
+
+        public bool LogCrawlers { get; set; } = false;
+
         public override void OnException(ExceptionContext filterContext)
         {
             base.OnException(filterContext);
+            filterContext.HttpContext.Response.StatusCode = 500;
+            
             string title = DefaultLogEntry.Title ?? (filterContext.Exception != null ? filterContext.Exception.GetType().Name : "Unhandled error");
             string message = DefaultLogEntry.Message ?? (filterContext.Exception != null ? filterContext.Exception.Message : null);
             string source = DefaultLogEntry.Source ?? LogEntrySourceDefaults.MVCController;
             object area = DefaultLogEntry.Area ?? ((filterContext.RouteData.Values["area"] ?? "") + "/" + (filterContext.RouteData.Values["controller"] ?? filterContext.Controller.GetType().Name) + "/" + (filterContext.RouteData.Values["action"] ?? ""));
-
-            filterContext.HttpContext.Response.StatusCode = 500;
+            
             LogEntry entry = LogEntry.Error(title, message, source, (string)area);
             entry.CorrelationId = (Guid?)filterContext.HttpContext.Items["ActionFilterAttributeCorrelationId"];
 
@@ -50,7 +58,14 @@ namespace TinyLog.Mvc
                  }
             };
             filterContext.Result = vr;
-            filterContext.ExceptionHandled = TinyLog.Log.Default.WriteLogEntry<ActionFilterCustomData>(entry, ActionFilterCustomData.FromExceptionContext(filterContext));
+
+            bool handled = true;
+            if (!LogCrawlers && !IsBot(filterContext.HttpContext))
+            {
+                handled = TinyLog.Log.Default.WriteLogEntry<ActionFilterCustomData>(entry, ActionFilterCustomData.FromExceptionContext(filterContext));
+            }
+
+            filterContext.ExceptionHandled = handled;
         }
     }
 }
