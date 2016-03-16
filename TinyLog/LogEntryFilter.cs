@@ -62,6 +62,9 @@ namespace TinyLog
         private DateTimeOffset? _fromDate = null;
         private DateTimeOffset? _toDate = null;
 
+        /// <summary>
+        /// Determines if the filter conditions should be negated
+        /// </summary>
         public bool Negated { get; set; } = false;
 
         /// <summary>
