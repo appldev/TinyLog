@@ -40,14 +40,15 @@ namespace TinyLog
         /// <param name="severities">The list of severities that will match the filter. When null, all severities will match</param>
         /// <param name="EqualityComparer">A stringComparer to use when matching sources and areas. When null the OrdinalIgnoreCase comparer will be used</param>
         /// <returns>a new LogEntryFilter</returns>
-        public static LogEntryFilter Create(string[] sources = null, string[] areas = null, LogEntrySeverity[] severities = null, StringComparer EqualityComparer = null)
+        public static LogEntryFilter Create(string[] sources = null, string[] areas = null, LogEntrySeverity[] severities = null, StringComparer EqualityComparer = null, bool negated = false)
         {
             return new LogEntryFilter()
             {
                 SourcesFilter = sources,
                 AreasFilter = areas,
                 SeveritiesFilter = severities,
-                EqualityComparer = EqualityComparer ?? StringComparer.OrdinalIgnoreCase
+                EqualityComparer = EqualityComparer ?? StringComparer.OrdinalIgnoreCase,
+                Negated = negated
             };
         }
 
@@ -61,7 +62,7 @@ namespace TinyLog
         private DateTimeOffset? _fromDate = null;
         private DateTimeOffset? _toDate = null;
 
-
+        public bool Negated { get; set; } = false;
 
         /// <summary>
         /// Defines the list of sources for the filter
@@ -127,11 +128,22 @@ namespace TinyLog
                 }
                 else
                 {
-                    return x => (SourcesFilter == null || SourcesFilter.Contains(x.Source, EqualityComparer)) &&
+                    if (!Negated)
+                    {
+                        return x => (SourcesFilter == null || SourcesFilter.Contains(x.Source, EqualityComparer)) &&
                             (AreasFilter == null || AreasFilter.Contains(x.Area, EqualityComparer)) &&
                             (SeveritiesFilter == null || SeveritiesFilter.Contains(x.Severity)) &&
                             (FromDate == null || x.CreatedOn >= FromDate.Value) &&
                             (ToDate == null || x.CreatedOn <= ToDate.Value);
+                    }
+                    else
+                    {
+                        return x => (SourcesFilter == null || !SourcesFilter.Contains(x.Source, EqualityComparer)) &&
+                            (AreasFilter == null || !AreasFilter.Contains(x.Area, EqualityComparer)) &&
+                            (SeveritiesFilter == null || !SeveritiesFilter.Contains(x.Severity)) &&
+                            (FromDate == null || x.CreatedOn < FromDate.Value) &&
+                            (ToDate == null || x.CreatedOn > ToDate.Value);
+                    }
                 }
             }
             set
@@ -140,6 +152,8 @@ namespace TinyLog
                 _AreasFilter = null;
                 _SourcesFilter = null;
                 _SeveritiesFilter = null;
+                FromDate = null;
+                ToDate = null;
             }
         }
 
