@@ -17,6 +17,8 @@ namespace TinyLog.Formatters
 
         private Formatting indent = Formatting.Indented;
 
+        public bool ThrowSerializationExceptions { get; set; } = true;
+
         /// <summary>
         /// Contains the default json serialization settings
         /// </summary>
@@ -37,7 +39,28 @@ namespace TinyLog.Formatters
         protected override void FormatLogEntry(LogEntry logEntry, object customData)
         {
             ActionFilterCustomData data = (customData as ActionFilterCustomData);
-            logEntry.CustomData = JsonConvert.SerializeObject(data, indent, _SerializationSettings);
+            try
+            {
+                logEntry.CustomData = JsonConvert.SerializeObject(data, indent, _SerializationSettings);
+            }
+            catch (Exception ex)
+            {
+                if (ThrowSerializationExceptions)
+                {
+                    throw ex;
+                }
+                else
+                {
+                    var a = new
+                    {
+                        CustomDataType = customData.GetType().Name,
+                        Exception = JsonConvert.SerializeObject(ex, indent, _SerializationSettings)
+                    };
+                    logEntry.CustomData = JsonConvert.SerializeObject(a, indent, _SerializationSettings);
+                }
+                
+            }
+            
             if (data.RequestContext != null)
             {
                 logEntry.Client = string.Format("{0}/{1}", data.RequestContext.UserHostAddress, data.RequestContext.UserHostName);
