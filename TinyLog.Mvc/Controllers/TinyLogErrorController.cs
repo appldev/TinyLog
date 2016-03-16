@@ -46,7 +46,7 @@ namespace TinyLog.Mvc.Controllers
         public ActionResult IIS(int? Id)
         {
             Exception ex = Server.GetLastError() ?? new Exception(string.Format("An unhandled Http {0} error occured", Id ?? 0));
-            LogEntry logEntry = LogEntry.Error(DefaultIISErrorLogTitle.Contains("{0}") ? string.Format("IIS ERROR/{0}", Server.MachineName) : DefaultIISErrorLogTitle, ex.Message, TinyLog.LogEntrySourceDefaults.IISWebServer, null);
+            LogEntry logEntry = LogEntry.Error(DefaultIISErrorLogTitle.Contains("{0}") ? string.Format("IIS ERROR/{0}", Server.MachineName) : DefaultIISErrorLogTitle, ex.Message, TinyLog.LogEntrySourceDefaults.IISWebServer, HttpContext.Request.RawUrl);
             logEntry.CorrelationId = (Guid?)HttpContext.Items["ActionFilterAttributeCorrelationId"];
             ActionFilterCustomData customData = ActionFilterCustomData.FromHttpContext(System.Web.HttpContext.Current);
             customData.HttpContext.Exception = customData.HttpContext.Exception ?? ex;

@@ -16,6 +16,7 @@ namespace TinyLogTests
         {
             log.RegisterLogFormatter(new JsonSerializationFormatter());
         }
+
         [TestMethod]
         public async Task Write100LogEntries_JsonSerializationFormatter()
         {

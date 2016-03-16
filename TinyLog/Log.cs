@@ -58,7 +58,7 @@ namespace TinyLog
         /// <summary>
         /// Contains the global Emergency log setting that all logs will use. This setting can be overridden in each WriteLog() call
         /// </summary>
-        public static EmergencyLogSettings EmergencyLogSetting { get; set; } = EmergencyLogSettings.ThrowExceptions;
+        public static EmergencyLogSettings EmergencyLogSetting { get; set; } = EmergencyLogSettings.Ignore;
 
         /// <summary>
         /// Setup the emergency log with a FileLogWriter in the default temp folder and with a random file name. It also adds the default Exception formatter

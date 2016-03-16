@@ -74,6 +74,7 @@
     <Compile Include="SqlLogWriterTests.cs" />
     <Compile Include="AllWritersTests.cs" />
     <Compile Include="SqlLazyLogWriterTests.cs" />
+    <Compile Include="JsonSerilizationFormatterExceptionTests.cs" />
     <Compile Include="XmlSerializationFormatterTests.cs" />
   </ItemGroup>
   <ItemGroup>
