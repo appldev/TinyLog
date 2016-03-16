@@ -55,10 +55,10 @@ namespace TinyLog.CustomData.Mvc
             {
                 context.RoleUser = (RolePrincipal)principal;
             }
-            else if (principal is ClaimsPrincipal)
-            {
-                context.ClaimsUser = (ClaimsPrincipal)principal;
-            }
+            //else if (principal is ClaimsPrincipal)
+            //{
+            //    context.ClaimsUser = (ClaimsPrincipal)principal;
+            //}
             return context;
         }
 
