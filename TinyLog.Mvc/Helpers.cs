@@ -96,7 +96,8 @@ namespace TinyLog.Mvc
                 {
                     HttpContext.Current.Response.StatusCode = (ex as HttpException).GetHttpCode();
                 }
-                LogEntry logEntry = LogEntry.Critical(string.Format("ASP.NET ERROR/{0}", HttpContext.Current.Server.MachineName), ex.Message, LogEntrySourceDefaults.ASPNETWebServer, Convert.ToString(sender));
+
+                LogEntry logEntry = LogEntry.Critical(string.Format("ASP.NET ERROR/{0}", HttpContext.Current.Server.MachineName), ex.Message, LogEntrySourceDefaults.ASPNETWebServer, HttpContext.Current.Request.RawUrl);
                 Log.Default.WriteLogEntry<ActionFilterCustomData>(logEntry, ActionFilterCustomData.FromHttpContext(HttpContext.Current));
                 if (HttpContext.Current.Session != null)
                 {
