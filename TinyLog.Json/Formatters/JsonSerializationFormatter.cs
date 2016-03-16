@@ -22,10 +22,31 @@ namespace TinyLog.Formatters
             TypeNameHandling = TypeNameHandling.Objects
         };
 
+        public bool ThrowSerializationExceptions { get; set; } = true;
 
         protected override void FormatLogEntry(LogEntry logEntry, object customData)
         {
-            logEntry.CustomData = JsonConvert.SerializeObject(customData, indent, settings);
+            try
+            {
+                logEntry.CustomData = JsonConvert.SerializeObject(customData, indent, settings);
+            }
+            catch (Exception ex)
+            {
+                if (ThrowSerializationExceptions)
+                {
+                    throw ex;
+                }
+                else
+                {
+                    var data = new
+                    {
+                        CustomDataType = customData.GetType().Name,
+                        Exception = JsonConvert.SerializeObject(ex, indent, settings)
+                    };
+                    logEntry.CustomData = JsonConvert.SerializeObject(data, indent, settings);
+                }
+            }
+
         }
 
         protected override object ParseCustomData(LogEntry logEntry)
@@ -36,7 +57,7 @@ namespace TinyLog.Formatters
                 return null;
             }
             return JsonConvert.DeserializeObject(logEntry.CustomData, t, settings);
-            
+
         }
     }
 }
