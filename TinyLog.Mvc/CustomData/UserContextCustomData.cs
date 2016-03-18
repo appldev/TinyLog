@@ -43,18 +43,18 @@ namespace TinyLog.CustomData.Mvc
                 AuthenticationType = principal.Identity.AuthenticationType,
                 Name = principal.Identity.Name
             };
-            if (principal is WindowsPrincipal)
-            {
-                context.WindowsUser = (WindowsPrincipal)principal;
-            }
-            else if (principal is GenericPrincipal)
-            {
-                context.GenericUser = (GenericPrincipal)principal;
-            }
-            else if (principal is RolePrincipal)
-            {
-                context.RoleUser = (RolePrincipal)principal;
-            }
+            //if (principal is WindowsPrincipal)
+            //{
+            //    context.WindowsUser = (WindowsPrincipal)principal;
+            //}
+            //else if (principal is GenericPrincipal)
+            //{
+            //    context.GenericUser = (GenericPrincipal)principal;
+            //}
+            //else if (principal is RolePrincipal)
+            //{
+            //    context.RoleUser = (RolePrincipal)principal;
+            //}
             //else if (principal is ClaimsPrincipal)
             //{
             //    context.ClaimsUser = (ClaimsPrincipal)principal;
