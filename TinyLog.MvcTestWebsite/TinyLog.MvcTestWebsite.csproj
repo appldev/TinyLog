@@ -119,6 +119,26 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="TinyLog, Version=1.2.5924.19664, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Core.1.3.0-rc\lib\net45\TinyLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TinyLog.Json, Version=1.2.5924.19664, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Full.1.3.0-rc\lib\net45\TinyLog.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TinyLog.MSMQ, Version=1.2.5924.19664, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Full.1.3.0-rc\lib\net45\TinyLog.MSMQ.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TinyLog.Mvc, Version=1.2.5924.19665, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Mvc.1.3.0-rc\lib\net45\TinyLog.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TinyLog.Sql, Version=1.2.5924.19665, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TinyLog-Full.1.3.0-rc\lib\net45\TinyLog.Sql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -450,28 +470,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TinyLog.Json\TinyLog.Json.csproj">
-      <Project>{580464dc-1517-4fe2-b7c8-14a6a1dc5c3b}</Project>
-      <Name>TinyLog.Json</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TinyLog.MSMQ\TinyLog.MSMQ.csproj">
-      <Project>{63d7dc94-d6cc-4ffc-bfcf-d12be2ea0b77}</Project>
-      <Name>TinyLog.MSMQ</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TinyLog.Mvc\TinyLog.Mvc.csproj">
-      <Project>{d1e1717d-d6fc-402f-af63-7aa16def694f}</Project>
-      <Name>TinyLog.Mvc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TinyLog.Sql\TinyLog.Sql.csproj">
-      <Project>{be0e2983-30b6-4804-8783-c88c1f52a029}</Project>
-      <Name>TinyLog.Sql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TinyLog\TinyLog.csproj">
-      <Project>{5ac41ab1-48f6-4a19-9205-94eccb35fec4}</Project>
-      <Name>TinyLog</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

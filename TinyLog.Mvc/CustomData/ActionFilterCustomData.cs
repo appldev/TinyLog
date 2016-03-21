@@ -19,23 +19,23 @@ namespace TinyLog.CustomData.Mvc
         }
 
 
-        public static ActionFilterCustomData FromHttpContext(HttpContext context, Details detail = Details.Full)
+        public static ActionFilterCustomData FromHttpContext(HttpContext context, Details detail = Details.Minimal)
         {
             return new ActionFilterCustomData()
             {
                 UserContext = UserContextCustomData.FromHttpContext(context, detail),
-                RequestContext = RequestContextCustomData.FromHttpRequest(context.Request),
-                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.Response),
+                RequestContext = RequestContextCustomData.FromHttpRequest(context.Request, detail),
+                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.Response, detail),
                 HttpContext = new HttpContextCustomData()
                 {
-                    Headers = context.Request.Headers,
+                    Headers = detail == ActionFilterCustomData.Details.Minimal ? null : context.Request.Headers,
                     Exception = context.Server.GetLastError(),
                     ExceptionHandled = false,
                     IsChildAction = false
                 },
                 ControllerContext = new ControllerContextCustomData()
                 {
-                    Session = SessionStateContextCustomData.FromHttpSessionState(context.Session)
+                    Session = SessionStateContextCustomData.FromHttpSessionState(context.Session, detail)
                 }
             };
         }
@@ -46,17 +46,17 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="context">The context object to create the instance from</param>
         /// <returns>A new instance of the ActionFilterCustomData</returns>
-        public static ActionFilterCustomData FromExceptionContext(ExceptionContext context, Details detail = Details.Full)
+        public static ActionFilterCustomData FromExceptionContext(ExceptionContext context, Details detail = Details.Minimal)
         {
 
             return new ActionFilterCustomData()
             {
-                UserContext = UserContextCustomData.FromHttpContext(context.HttpContext),
-                RequestContext = RequestContextCustomData.FromHttpRequest(context.HttpContext.Request),
-                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.HttpContext.Response),
+                UserContext = UserContextCustomData.FromHttpContext(context.HttpContext,detail),
+                RequestContext = RequestContextCustomData.FromHttpRequest(context.HttpContext.Request, detail),
+                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.HttpContext.Response, detail),
                 HttpContext = new HttpContextCustomData()
                 {
-                    Headers = context.HttpContext.Request.Headers,
+                    Headers = detail == ActionFilterCustomData.Details.Minimal ? null : context.HttpContext.Request.Headers,
                     Exception = context.Exception,
                     ExceptionHandled = context.ExceptionHandled,
                     IsChildAction = context.IsChildAction
@@ -64,9 +64,9 @@ namespace TinyLog.CustomData.Mvc
                 ControllerContext = new ControllerContextCustomData()
                 {
                     RouteValues = context.RequestContext.RouteData.Values,
-                    Session = SessionStateContextCustomData.FromHttpSessionState(context.HttpContext.Session),
-                    ViewBag = context.Controller.ViewBag,
-                    ViewData = context.Controller.ViewData
+                    Session = SessionStateContextCustomData.FromHttpSessionState(context.HttpContext.Session, detail),
+                    ViewBag = detail == ActionFilterCustomData.Details.Minimal ? null : context.Controller.ViewBag,
+                    ViewData = detail == ActionFilterCustomData.Details.Minimal ? null : context.Controller.ViewData
                 }
             };
         }
@@ -75,16 +75,16 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="context">The context object to create the instance from</param>
         /// <returns>A new instance of the ActionFilterCustomData</returns>
-        public static ActionFilterCustomData FromResultExecuted(ResultExecutedContext context, Details detail = Details.Full)
+        public static ActionFilterCustomData FromResultExecuted(ResultExecutedContext context, Details detail = Details.Minimal)
         {
             return new ActionFilterCustomData()
             {
-                UserContext = UserContextCustomData.FromHttpContext(context.HttpContext),
-                RequestContext = RequestContextCustomData.FromHttpRequest(context.HttpContext.Request),
-                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.HttpContext.Response),
+                UserContext = UserContextCustomData.FromHttpContext(context.HttpContext,detail),
+                RequestContext = RequestContextCustomData.FromHttpRequest(context.HttpContext.Request, detail),
+                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.HttpContext.Response, detail),
                 HttpContext = new HttpContextCustomData()
                 {
-                    Headers = context.HttpContext.Request.Headers,
+                    Headers = detail == ActionFilterCustomData.Details.Minimal ? null : context.HttpContext.Request.Headers,
                     Exception = context.Exception,
                     ExceptionHandled = context.ExceptionHandled,
                     IsChildAction = context.IsChildAction,
@@ -92,10 +92,10 @@ namespace TinyLog.CustomData.Mvc
                 },
                 ControllerContext = new ControllerContextCustomData()
                 {
-                    RouteValues = context.RequestContext.RouteData.Values,
-                    Session = SessionStateContextCustomData.FromHttpSessionState(context.HttpContext.Session),
-                    ViewBag = context.Controller.ViewBag,
-                    ViewData = context.Controller.ViewData
+                    RouteValues = detail == ActionFilterCustomData.Details.Minimal ? null : context.RequestContext.RouteData.Values,
+                    Session = SessionStateContextCustomData.FromHttpSessionState(context.HttpContext.Session, detail),
+                    ViewBag = detail == ActionFilterCustomData.Details.Minimal ? null : context.Controller.ViewBag,
+                    ViewData = detail == ActionFilterCustomData.Details.Minimal ? null : context.Controller.ViewData
                 }
             };
         }
@@ -105,25 +105,25 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="context">The context object to create the instance from</param>
         /// <returns>A new instance of the ActionFilterCustomData</returns>
-        public static ActionFilterCustomData FromResultExecuting(ResultExecutingContext context, Details detail = Details.Full)
+        public static ActionFilterCustomData FromResultExecuting(ResultExecutingContext context, Details detail = Details.Minimal)
         {
             return new ActionFilterCustomData()
             {
-                UserContext = UserContextCustomData.FromHttpContext(context.HttpContext),
-                RequestContext = RequestContextCustomData.FromHttpRequest(context.HttpContext.Request),
-                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.HttpContext.Response),
+                UserContext = UserContextCustomData.FromHttpContext(context.HttpContext, detail),
+                RequestContext = RequestContextCustomData.FromHttpRequest(context.HttpContext.Request, detail),
+                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.HttpContext.Response, detail),
                 HttpContext = new HttpContextCustomData()
                 {
-                    Headers = context.HttpContext.Request.Headers,
+                    Headers = detail == ActionFilterCustomData.Details.Minimal ? null : context.HttpContext.Request.Headers,
                     IsChildAction = context.IsChildAction,
                     Cancel = context.Cancel
                 },
                 ControllerContext = new ControllerContextCustomData()
                 {
-                    RouteValues = context.RequestContext.RouteData.Values,
-                    Session = SessionStateContextCustomData.FromHttpSessionState(context.HttpContext.Session),
-                    ViewBag = context.Controller.ViewBag,
-                    ViewData = context.Controller.ViewData
+                    RouteValues = detail == ActionFilterCustomData.Details.Minimal ? null : context.RequestContext.RouteData.Values,
+                    Session = SessionStateContextCustomData.FromHttpSessionState(context.HttpContext.Session, detail),
+                    ViewBag = detail == ActionFilterCustomData.Details.Minimal ? null : context.Controller.ViewBag,
+                    ViewData = detail == ActionFilterCustomData.Details.Minimal ? null : context.Controller.ViewData
                 }
             };
         }
@@ -132,26 +132,26 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="context">The context object to create the instance from</param>
         /// <returns>A new instance of the ActionFilterCustomData</returns>
-        public static ActionFilterCustomData FromActionExecuted(ActionExecutedContext context, Details detail = Details.Full)
+        public static ActionFilterCustomData FromActionExecuted(ActionExecutedContext context, Details detail = Details.Minimal)
         {
             return new ActionFilterCustomData()
             {
-                UserContext = UserContextCustomData.FromHttpContext(context.HttpContext),
-                RequestContext = RequestContextCustomData.FromHttpRequest(context.HttpContext.Request),
-                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.HttpContext.Response),
+                UserContext = UserContextCustomData.FromHttpContext(context.HttpContext,detail),
+                RequestContext = RequestContextCustomData.FromHttpRequest(context.HttpContext.Request, detail),
+                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.HttpContext.Response, detail),
                 HttpContext = new HttpContextCustomData()
                 {
-                    Headers = context.HttpContext.Request.Headers,
+                    Headers = detail == ActionFilterCustomData.Details.Minimal ? null : context.HttpContext.Request.Headers,
                     Exception = context.Exception,
                     ExceptionHandled = context.ExceptionHandled,
                     IsChildAction = context.IsChildAction
                 },
                 ControllerContext = new ControllerContextCustomData()
                 {
-                    RouteValues = context.RequestContext.RouteData.Values,
-                    Session = SessionStateContextCustomData.FromHttpSessionState(context.HttpContext.Session),
-                    ViewBag = context.Controller.ViewBag,
-                    ViewData = context.Controller.ViewData
+                    RouteValues = detail == ActionFilterCustomData.Details.Minimal ? null : context.RequestContext.RouteData.Values,
+                    Session = SessionStateContextCustomData.FromHttpSessionState(context.HttpContext.Session,detail),
+                    ViewBag = detail == ActionFilterCustomData.Details.Minimal ? null : context.Controller.ViewBag,
+                    ViewData = detail == ActionFilterCustomData.Details.Minimal ? null : context.Controller.ViewData
                 }
             };
         }
@@ -160,23 +160,23 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="context">The context object to create the instance from</param>
         /// <returns>A new instance of the ActionFilterCustomData</returns>
-        public static ActionFilterCustomData FromActionExecuting(ActionExecutingContext context, Details detail = Details.Full)
+        public static ActionFilterCustomData FromActionExecuting(ActionExecutingContext context, Details detail = Details.Minimal)
         {
             return new ActionFilterCustomData()
             {
-                UserContext = UserContextCustomData.FromHttpContext(context.HttpContext),
-                RequestContext = RequestContextCustomData.FromHttpRequest(context.HttpContext.Request),
-                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.HttpContext.Response),
+                UserContext = UserContextCustomData.FromHttpContext(context.HttpContext,detail),
+                RequestContext = RequestContextCustomData.FromHttpRequest(context.HttpContext.Request,detail),
+                ResponseContext = ResponseContextCustomData.FromHttpResponse(context.HttpContext.Response,detail),
                 HttpContext = new HttpContextCustomData()
                 {
-                    Headers = context.HttpContext.Request.Headers
+                    Headers = detail == ActionFilterCustomData.Details.Minimal ? null : context.HttpContext.Request.Headers
                 },
                 ControllerContext = new ControllerContextCustomData()
                 {
-                    RouteValues = context.RequestContext.RouteData.Values,
-                    Session = SessionStateContextCustomData.FromHttpSessionState(context.HttpContext.Session),
-                    ViewBag = context.Controller.ViewBag,
-                    ViewData = context.Controller.ViewData
+                    RouteValues = detail == ActionFilterCustomData.Details.Minimal ? null : context.RequestContext.RouteData.Values,
+                    Session = SessionStateContextCustomData.FromHttpSessionState(context.HttpContext.Session, detail),
+                    ViewBag = detail == ActionFilterCustomData.Details.Minimal ? null : context.Controller.ViewBag,
+                    ViewData = detail == ActionFilterCustomData.Details.Minimal ? null : context.Controller.ViewData
                 }
             };
         }

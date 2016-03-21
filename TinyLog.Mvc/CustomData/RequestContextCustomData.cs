@@ -15,29 +15,29 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="request">The HttpRequest</param>
         /// <returns>A new instance of the RequestContextCustomData class</returns>
-        public static RequestContextCustomData FromHttpRequest(HttpRequest request)
+        public static RequestContextCustomData FromHttpRequest(HttpRequest request, ActionFilterCustomData.Details detail)
         {
             HttpRequestWrapper wrapper = new HttpRequestWrapper(request);
-            return FromHttpRequest(wrapper);
+            return FromHttpRequest(wrapper, detail);
         }
         /// <summary>
         /// Creates a new instance of the RequestContextCustomData from a HttpRequest
         /// </summary>
         /// <param name="request">The HttpRequest</param>
         /// <returns>A new instance of the RequestContextCustomData class</returns>
-        public static RequestContextCustomData FromHttpRequest(HttpRequestBase request)
+        public static RequestContextCustomData FromHttpRequest(HttpRequestBase request, ActionFilterCustomData.Details detail)
         {
             return new RequestContextCustomData()
             {
-                Browser = (HttpBrowserCapabilitiesWrapper)request.Browser,
-                Form = request.Form,
+                Browser = detail == ActionFilterCustomData.Details.Minimal ? null : (HttpBrowserCapabilitiesWrapper)request.Browser,
+                Form = detail == ActionFilterCustomData.Details.Minimal ? null : request.Form,
                 QueryString = request.QueryString,
                 Url = request.Url,
                 UrlReferrer = request.UrlReferrer,
-                UserAgent = request.UserAgent,
+                UserAgent = detail == ActionFilterCustomData.Details.Minimal ? null : request.UserAgent,
                 UserHostAddress = request.UserHostAddress,
                 UserHostName = request.UserHostName,
-                UserLanguages = request.UserLanguages,
+                UserLanguages = detail == ActionFilterCustomData.Details.Minimal ? null : request.UserLanguages,
                 ContentType = request.ContentType,
                 HttpMethod = request.HttpMethod
             };

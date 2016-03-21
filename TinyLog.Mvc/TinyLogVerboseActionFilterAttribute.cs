@@ -16,10 +16,11 @@ namespace TinyLog.Mvc
         /// </summary>
         /// <param name="verboseLogEvents">The events to log. The default is all events</param>
         /// <param name="verboseLog">a custom log to use. If not specified the TinyLog.Log.Default log will be used</param>
-        public TinyLogVerboseActionFilterAttribute(VerboseLogEvent verboseLogEvents = VerboseLogEvent.All, Log verboseLog = null)
+        public TinyLogVerboseActionFilterAttribute(VerboseLogEvent verboseLogEvents = VerboseLogEvent.All, Log verboseLog = null, ActionFilterCustomData.Details logDetails = ActionFilterCustomData.Details.Minimal)
         {
             VerboseLogEvents = verboseLogEvents;
             log = verboseLog ?? TinyLog.Log.Default;
+            this.LogDetails = logDetails;
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace TinyLog.Mvc
             All = OnActionExecuting | OnActionExecuted | OnResultExecuting | OnResultExecuted
         }
         public VerboseLogEvent VerboseLogEvents { get; set; } = VerboseLogEvent.All;
-
+        public ActionFilterCustomData.Details LogDetails { get; set; } = ActionFilterCustomData.Details.Minimal;
 
         private Log log = null;
         private static LogEntry FromContext(ControllerContext context, string title)
@@ -85,7 +86,7 @@ namespace TinyLog.Mvc
             }
             if ((VerboseLogEvents & VerboseLogEvent.OnActionExecuting) == VerboseLogEvent.OnActionExecuting)
             {
-                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnActionExecuting"), ActionFilterCustomData.FromActionExecuting(filterContext));
+                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnActionExecuting"), ActionFilterCustomData.FromActionExecuting(filterContext,LogDetails));
             }
         }
 
@@ -102,7 +103,7 @@ namespace TinyLog.Mvc
             }
             if ((VerboseLogEvents & VerboseLogEvent.OnActionExecuted) == VerboseLogEvent.OnActionExecuted)
             {
-                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnActionExecuted"), ActionFilterCustomData.FromActionExecuted(filterContext));
+                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnActionExecuted"), ActionFilterCustomData.FromActionExecuted(filterContext,LogDetails));
             }
         }
 
@@ -118,7 +119,7 @@ namespace TinyLog.Mvc
             }
             if ((VerboseLogEvents & VerboseLogEvent.OnResultExecuting) == VerboseLogEvent.OnResultExecuting)
             {
-                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnResultExecuting"), ActionFilterCustomData.FromResultExecuting(filterContext));
+                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnResultExecuting"), ActionFilterCustomData.FromResultExecuting(filterContext,LogDetails));
             }
         }
 
@@ -134,7 +135,7 @@ namespace TinyLog.Mvc
             }
             if ((VerboseLogEvents & VerboseLogEvent.OnResultExecuted) == VerboseLogEvent.OnResultExecuted)
             {
-                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnResultExecuted"), ActionFilterCustomData.FromResultExecuted(filterContext));
+                log.WriteLogEntry<ActionFilterCustomData>(FromContext(filterContext.Controller.ControllerContext, "OnResultExecuted"), ActionFilterCustomData.FromResultExecuted(filterContext,LogDetails));
             }
         }
 
