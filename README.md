@@ -3,6 +3,15 @@ TinyLog is a light-weight, simple and yet very comprehensive and powerful Loggin
 
 You can [view a live logging demo at http://tinylog.azurewebsites.net](http://tinylog.azurewebsites.net). This demo is based on the MVC Website from the source code.
 
+## Project Status
+[![Build status](https://ci.appveyor.com/api/projects/status/6rm74u5t0rlh0wxi/branch/master?svg=true)](https://ci.appveyor.com/project/michaelrandrup/tinylog/branch/master)
+### TinyLog-Core
+[![NuGet](https://img.shields.io/nuget/v/TinyLog-Core.svg)](https://www.nuget.org/packages/TinyLog-Core/)
+### TinyLog-Full
+[![NuGet](https://img.shields.io/nuget/v/TinyLog-Full.svg)](https://www.nuget.org/packages/TinyLog-Full/)
+### TinyLog-Mvc
+[![NuGet](https://img.shields.io/nuget/v/TinyLog-Mvc.svg)](https://www.nuget.org/packages/TinyLog-Mvc/)
+
 ##Included backend storage (Log Writers)
 Although you can write your own Log Writers with less than 50 lines of code, TinyLog includes Log Writers for the following backend storages:
 - **File based** logs (one file or day-by-day rollover)
