@@ -17,7 +17,7 @@ namespace TinyLogTests
             log.RegisterLogFormatter(new XmlSerializationFormatter());
         }
         [TestMethod]
-        [TestCategory("XmlSerializationFormatter")]
+        [TestCategory("Public")]
         public async Task Write100LogEntries_XmlSerializationFormatter()
         {
             int num = 0;
@@ -31,7 +31,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
-        [TestCategory("XmlSerializationFormatter")]
+        [TestCategory("Public")]
         public async Task Write100CompanyObjects_XmlSerializationFormatter()
         {
             int num = 0;

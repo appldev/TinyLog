@@ -20,6 +20,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public async Task Write100LogEntriesInFileMsMqAndSqlLogs_AllWritersTests()
         {
             int num = 0;

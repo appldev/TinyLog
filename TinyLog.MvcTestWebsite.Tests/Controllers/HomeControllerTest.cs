@@ -14,6 +14,7 @@ namespace TinyLog.MvcTestWebsite.Tests.Controllers
     public class HomeControllerTest
     {
         [TestMethod]
+        [TestCategory("Local")]
         public async Task Index()
         {
             // Arrange
@@ -27,6 +28,7 @@ namespace TinyLog.MvcTestWebsite.Tests.Controllers
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public void About()
         {
             // Arrange
@@ -40,6 +42,7 @@ namespace TinyLog.MvcTestWebsite.Tests.Controllers
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public void Contact()
         {
             // Arrange

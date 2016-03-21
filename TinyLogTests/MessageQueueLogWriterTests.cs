@@ -12,6 +12,7 @@ namespace TinyLogTests
     public class MessageQueueLogWriterTests : MessageQueueLogBaseClass
     {
         [TestInitialize]
+        [TestCategory("Local")]
         public void initialize()
         {
             log.RegisterLogFormatter(new ExceptionFormatter());
@@ -20,6 +21,7 @@ namespace TinyLogTests
 
 
         [TestMethod]
+        [TestCategory("Local")]
         public async Task Write100Exceptions_MessageQueueLogWriterTests()
         {
             int num = 0;
@@ -33,6 +35,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public async Task Write100LogEntries_MessageQueueLogWriterTests()
         {
             int num = 0;

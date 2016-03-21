@@ -10,6 +10,7 @@ namespace TinyLogTests
     public class SqlLogWriterTests : SqlLogBaseClass
     {
         [TestInitialize]
+        [TestCategory("Local")]
         public void Initialize()
         {
             log.RegisterLogFormatter(new ExceptionFormatter());
@@ -17,6 +18,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public async Task Write100AggregateExceptions_SqlLogWriterTests()
         {
             DateTime dt = DateTime.Now;
@@ -33,6 +35,7 @@ namespace TinyLogTests
 
 
         [TestMethod]
+        [TestCategory("Local")]
         public async Task Write50000Exceptions_SqlLogWriterTests()
         {
             DateTime dt = DateTime.Now;
@@ -48,6 +51,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public async Task Write100Exceptions_SqlLogWriterTests()
         {
             int num = 0;

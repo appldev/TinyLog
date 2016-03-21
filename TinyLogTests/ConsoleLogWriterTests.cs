@@ -18,6 +18,7 @@ namespace TinyLogTests
             log.RegisterLogFormatter(new JsonSerializationFormatter());
         }
         [TestMethod]
+        [TestCategory("Public")]
         public void LogEntryCreationWithoutCustomData_ConsoleLogWriterTests()
         {
             List<LogEntry> entries = LogHelpers.CreateLogEntries();
@@ -34,6 +35,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
+        [TestCategory("Public")]
         public void LogEntryCreationWithCustomData_ConsoleLogWriterTests()
         {
             List<LogEntry> entries = LogHelpers.CreateLogEntries();

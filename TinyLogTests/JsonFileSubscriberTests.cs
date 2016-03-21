@@ -16,6 +16,7 @@ namespace TinyLogTests
     {
         private string path = Path.Combine(Path.GetTempPath(), "JsonFileSubcriber_" + Path.GetRandomFileName());
         [TestInitialize]
+        [TestCategory("Public")]
         public void initialize()
         {
             log.RegisterLogFormatter(new JsonSerializationFormatter(false));
@@ -27,6 +28,7 @@ namespace TinyLogTests
         }
 
         [TestCleanup]
+        [TestCategory("Public")]
         public void CleanUp()
         {
             string[] files = Directory.GetFiles(path);
@@ -37,6 +39,7 @@ namespace TinyLogTests
             Directory.Delete(path);
         }
         [TestMethod]
+        [TestCategory("Public")]
         public async Task Write100LogEntries_JsonFileSubscriberTests()
         {
             int num = 0;

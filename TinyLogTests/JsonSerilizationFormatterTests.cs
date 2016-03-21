@@ -12,12 +12,14 @@ namespace TinyLogTests
     public class JsonSerilizationFormatterTests : FileLogBaseClass
     {
         [TestInitialize]
+        [TestCategory("Public")]
         public void initialize()
         {
             log.RegisterLogFormatter(new JsonSerializationFormatter());
         }
 
         [TestMethod]
+        [TestCategory("Public")]
         public async Task Write100LogEntries_JsonSerializationFormatter()
         {
             int num = 0;
@@ -32,6 +34,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
+        [TestCategory("Public")]
         public async Task WriteExceptionsAsJaon()
         {
             bool b = await LogHelpers.WriteAggregateException(log);

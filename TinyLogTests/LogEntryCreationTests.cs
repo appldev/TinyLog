@@ -13,12 +13,14 @@ namespace TinyLogTests
     public class LogEntryCreationTests : MessageQueueLogBaseClass
     {
         [TestInitialize]
+        [TestCategory("Local")]
         public void initialize()
         {
             log.RegisterLogFormatter(new JsonSerializationFormatter(true));
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public void LogEntryCreationAsGeneric()
         {
             List<LogEntry> entries = CreateLogEntries();
@@ -37,6 +39,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public void LogEntryCreationAsObject()
         {
             List<LogEntry> entries = CreateLogEntries();
@@ -54,6 +57,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public void LogEntryCreationWithoutCustomData()
         {
             List<LogEntry> entries = CreateLogEntries();

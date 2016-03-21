@@ -15,6 +15,7 @@ namespace TinyLogTests
         private string queueName = ".\\Private$\\" + System.IO.Path.GetRandomFileName();
 
         [TestInitialize]
+        [TestCategory("Local")]
         public void Initialize()
         {
             log.RegisterLogSubscriber(new MessageQueueSubscriber(queueName,
@@ -22,12 +23,14 @@ namespace TinyLogTests
         }
 
         [TestCleanup]
+        [TestCategory("Local")]
         public void CleanUp()
         {
             MessageQueueLogWriter.Delete(queueName);
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public void WriteEntriesWithErrorCriticalSubscriber()
         {
             List<LogEntry> entries = new List<LogEntry>();

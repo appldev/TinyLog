@@ -13,6 +13,7 @@ namespace TinyLogTests
     public class SqlLogReaderTests : SqlLogBaseClass
     {
         [TestInitialize]
+        [TestCategory("Local")]
         public void Initialize()
         {
             log.RegisterLogFormatter(new ExceptionFormatter());
@@ -22,6 +23,7 @@ namespace TinyLogTests
 
 
         [TestMethod]
+        [TestCategory("Local")]
         public void ReadAllLogs()
         {
             IEnumerable<LogEntry> result = log.ReadLogEntries(LogEntryFilter.Create(), -1);
@@ -29,6 +31,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public void Read25LogEntries()
         {
             IEnumerable<LogEntry> result = log.ReadLogEntries(LogEntryFilter.Create(), 25);
@@ -37,7 +40,9 @@ namespace TinyLogTests
             Assert.IsTrue(i == 25);
         }
 
+
         [TestMethod]
+        [TestCategory("Local")]
         public async Task ReadBySeverity()
         {
             IEnumerable<LogEntry> result = await log.ReadLogEntriesAsync(LogEntryFilter.Create(),-1);

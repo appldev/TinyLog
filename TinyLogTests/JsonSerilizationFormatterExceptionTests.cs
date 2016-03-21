@@ -31,12 +31,14 @@ namespace TinyLogTests
     public class JsonSerilizationFormatterExceptionTests : FileLogBaseClass
     {
         [TestInitialize]
+        [TestCategory("Public")]
         public void initialize()
         {
             log.RegisterLogFormatter(new JsonSerializationFormatter() { ThrowSerializationExceptions = false });
         }
 
         [TestMethod]
+        [TestCategory("Public")]
         public async Task WriteLogEntryWithSerializationException()
         {
             LogEntry entry = LogEntry.Create("WriteLogEntryWithSerializationException", "Message", LogEntrySourceDefaults.Log, "WriteLogEntryWithSerializationException", LogHelpers.RandomSeverity);

@@ -67,7 +67,6 @@
     <Compile Include="MessageQueueLogWriterTests.cs" />
     <Compile Include="LogEntryCreationTests.cs" />
     <Compile Include="MessageQueueSubscriberTests.cs" />
-    <Compile Include="DebuggerLogWriterTests.cs" />
     <Compile Include="ConsoleLogWriterTests.cs" />
     <Compile Include="BaseClasses\SqlLogBaseClass.cs" />
     <Compile Include="SqlLogReaderTests.cs" />

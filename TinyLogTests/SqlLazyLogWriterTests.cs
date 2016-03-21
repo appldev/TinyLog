@@ -11,6 +11,7 @@ namespace TinyLogTests
     public class SqlLazyLogWriterTests : SqlLazyLogBaseClass
     {
         [TestInitialize]
+        [TestCategory("Local")]
         public void Initialize()
         {
             log.RegisterLogFormatter(new ExceptionFormatter());
@@ -18,6 +19,7 @@ namespace TinyLogTests
         }
 
         [TestMethod]
+        [TestCategory("Local")]
         public async Task Write100AggregateExceptions_SqlLazyLogWriterTests()
         {
             DateTime dt = DateTime.Now;
