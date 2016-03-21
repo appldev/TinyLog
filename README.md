@@ -3,13 +3,16 @@ TinyLog is a light-weight, simple and yet very comprehensive and powerful Loggin
 
 You can [view a live logging demo at http://tinylog.azurewebsites.net](http://tinylog.azurewebsites.net). This demo is based on the MVC Website from the source code.
 
-## Project Status
+## Project Status and packages
 [![Build status](https://ci.appveyor.com/api/projects/status/6rm74u5t0rlh0wxi/branch/master?svg=true)](https://ci.appveyor.com/project/michaelrandrup/tinylog/branch/master)
 ### TinyLog-Core
+This package contains the core TinyLog functionality. Can also be used as the foundation for creating custom LogWriters, LogFormatters, etc.
 [![NuGet](https://img.shields.io/nuget/v/TinyLog-Core.svg)](https://www.nuget.org/packages/TinyLog-Core/)
 ### TinyLog-Full
+This package contains the core plus LogWriters and LogFormatters for various end-points (MSMQ, JSON, SQL, etc)
 [![NuGet](https://img.shields.io/nuget/v/TinyLog-Full.svg)](https://www.nuget.org/packages/TinyLog-Full/)
 ### TinyLog-Mvc
+This package is designed for logging ASP.NET MVC Websites. It contains specific functionality for handling website errors and verbose logging.
 [![NuGet](https://img.shields.io/nuget/v/TinyLog-Mvc.svg)](https://www.nuget.org/packages/TinyLog-Mvc/)
 
 ##Included backend storage (Log Writers)
