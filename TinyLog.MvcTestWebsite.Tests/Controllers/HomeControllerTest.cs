@@ -13,19 +13,19 @@ namespace TinyLog.MvcTestWebsite.Tests.Controllers
     [TestClass]
     public class HomeControllerTest
     {
-        [TestMethod]
-        [TestCategory("Local")]
-        public async Task Index()
-        {
-            // Arrange
-            HomeController controller = new HomeController();
+        //[TestMethod]
+        //[TestCategory("Local")]
+        //public async Task Index()
+        //{
+        //    // Arrange
+        //    HomeController controller = new HomeController();
 
-            // Act
-            ViewResult result = await controller.Index() as ViewResult;
+        //    // Act
+        //    ViewResult result = await controller.Index() as ViewResult;
 
-            // Assert
-            Assert.IsNotNull(result);
-        }
+        //    // Assert
+        //    Assert.IsNotNull(result);
+        //}
 
         [TestMethod]
         [TestCategory("Local")]

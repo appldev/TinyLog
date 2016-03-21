@@ -56,7 +56,9 @@
     <Compile Include="BaseClasses\ConsoleLogBaseClass.cs" />
     <Compile Include="BaseClasses\DebuggerLogBaseClass.cs" />
     <Compile Include="BaseClasses\FileLogBaseClass.cs" />
+    <Compile Include="BaseClasses\ServiceBusQueueBaseClass.cs" />
     <Compile Include="BaseClasses\SqlLazyLogBaseClass.cs" />
+    <Compile Include="BaseClasses\StorageQueueBaseClass.cs" />
     <Compile Include="Examples\GettingStarted.cs" />
     <Compile Include="LogHelpers.cs" />
     <Compile Include="BaseClasses\MessageQueueLogBaseClass.cs" />
@@ -74,9 +76,17 @@
     <Compile Include="AllWritersTests.cs" />
     <Compile Include="SqlLazyLogWriterTests.cs" />
     <Compile Include="JsonSerilizationFormatterExceptionTests.cs" />
+    <Compile Include="ServiceBusQueueWriterTests.cs" />
+    <Compile Include="ServiceBusTopicWriterTests.cs" />
+    <Compile Include="StorageQueueWriterTests.cs" />
+    <Compile Include="StorageTableWriterTests.cs" />
     <Compile Include="XmlSerializationFormatterTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TinyLog.AzureQueue\TinyLog.Azure.csproj">
+      <Project>{bb00dfa9-0986-4363-a8aa-6086784c97aa}</Project>
+      <Name>TinyLog.Azure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TinyLog.Json\TinyLog.Json.csproj">
       <Project>{580464dc-1517-4fe2-b7c8-14a6a1dc5c3b}</Project>
       <Name>TinyLog.Json</Name>
@@ -93,6 +103,9 @@
       <Project>{5ac41ab1-48f6-4a19-9205-94eccb35fec4}</Project>
       <Name>TinyLog</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
