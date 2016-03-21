@@ -17,14 +17,14 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="session">The session state object</param>
         /// <returns>A new instance of the SessionStateContextCustomData class</returns>
-        public static SessionStateContextCustomData FromHttpSessionState(HttpSessionState session)
+        public static SessionStateContextCustomData FromHttpSessionState(HttpSessionState session, ActionFilterCustomData.Details detail)
         {
             if (session == null)
             {
                 return null;
             }
             HttpSessionStateWrapper wrapper = new HttpSessionStateWrapper(session);
-            return FromHttpSessionState(wrapper);
+            return FromHttpSessionState(wrapper, detail);
         }
 
         /// <summary>
@@ -32,8 +32,12 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="session">The session state object</param>
         /// <returns>A new instance of the SessionStateContextCustomData class</returns>
-        public static SessionStateContextCustomData FromHttpSessionState(HttpSessionStateBase session)
+        public static SessionStateContextCustomData FromHttpSessionState(HttpSessionStateBase session, ActionFilterCustomData.Details detail)
         {
+            if (detail == ActionFilterCustomData.Details.Minimal)
+            {
+                return null;
+            }
             return new SessionStateContextCustomData()
             {
                 Items = session.Keys.OfType<string>().ToDictionary(k => k, k => session[k]),

@@ -14,7 +14,7 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="response">The HttpResponse to use</param>
         /// <returns>A new instance of ResponseContextCustomData</returns>
-        public static ResponseContextCustomData FromHttpResponse(HttpResponse response)
+        public static ResponseContextCustomData FromHttpResponse(HttpResponse response, ActionFilterCustomData.Details detail)
         {
             return new ResponseContextCustomData()
             {
@@ -32,7 +32,7 @@ namespace TinyLog.CustomData.Mvc
         /// </summary>
         /// <param name="response">The HttpResponse to use</param>
         /// <returns>A new instance of ResponseContextCustomData</returns>
-        public static ResponseContextCustomData FromHttpResponse(HttpResponseBase response)
+        public static ResponseContextCustomData FromHttpResponse(HttpResponseBase response, ActionFilterCustomData.Details detail)
         {
             return new ResponseContextCustomData()
             {

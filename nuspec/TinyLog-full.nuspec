@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>TinyLog-Full</id>
-    <version>1.2.2</version>
+    <version>1.3.0-rc</version>
     <title>TinyLog-Full</title>
     <authors>Michael Randrup</authors>
     <owners>michaelrandrup</owners>
@@ -19,6 +19,7 @@
     <tags>Logging .NET C#</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="8.0.2" />
+      <dependency id="TinyLog-Core" version="1.3.0-rc" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Core" targetFramework="net452" />
